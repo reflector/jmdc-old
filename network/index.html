@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link type="text/css" rel="stylesheet" href="colorbrewer/colorbrewer.css"/>
+<style>
+
+.label {
+    stroke-width: 0;
+    font: 14px sans-serif;
+}
+
+.GrayedOut {
+  fill: white;
+}
+
+.node {
+  cursor: move;
+  stroke-width: 3;
+  stroke: #999999;
+}
+
+.node.fixed {
+}
+
+.legend_node {
+  stroke-width: 3;
+  stroke: #999999;
+}
+
+.legend_link {
+  stroke-width: 3;
+  stroke: #999999;
+}
+
+.link {
+  fill: none;
+}
+
+
+.axis text {
+  font: 11px sans-serif;
+}
+
+.axis path {
+  display: none;
+}
+
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.grid-background {
+  fill: #ddd;
+}
+
+.grid line,
+.grid path {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.grid .minor.tick line {
+  stroke-opacity: .5;
+}
+
+.brush .extent {
+  stroke: #000;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+
+</style>
+<body>
+<script src="d3.v3.min.js"></script>
+<script src="underscore.js"></script>
+<script src="colorbrewer/colorbrewer.js"></script>
+<script>
+
+var width = window.innerWidth, 
+  height = window.innerHeight;
+
+var svg = d3.select("body").append("svg")
+    .attr("pointer-events", "all");
+
+//
+// data for the legend
+//
+
+var entityToColorSeries= {
+  "Person":"Greens",
+  "Company":"Blues"
+};
+
+var statusToColor= {
+  "Person":{"undefined":"q2-3"},
+  "Company":{"Client":"q3-4","Prospect":"q2-4","Alive":"q1-4","Dead":"q0-4"}
+};
+
+var node_dataset= [
+  {show: true, name: "Person", entity:"Person"},
+  {show: true, name: "Client", entity:"Company",status:"Client"},
+  {show: true, name: "Prospect", entity:"Company",status:"Prospect"},
+  {show: true, name: "Company", entity:"Company",status:"Alive"},
+  {show: true, name: "Dead Pool", entity:"Company",status:"Dead"}
+];
+
+var typeToColorSeries= {
+  "Investment":"Oranges",
+  "Employment":"Purples"
+};
+var relationshipToSeries= {
+  "Founder":"Oranges",
+  "Advisor":"Oranges",
+  "Investor":"Oranges",
+  "Collaborator":"Purples",
+  "Consultant" :"Purples",
+  "Employee":"Purples",
+  "Ex-Employee" :"Purples"
+};
+var relationshipToSize= {
+  "Founder":"3",
+  "Investor":"3",
+  "Advisor":"3",
+  "Collaborator":"4",
+  "Consultant" :"4",
+  "Employee":"4",
+  "Ex-Employee" :"4"
+};
+var relationshipToQ= {
+  "Founder":"2",
+  "Investor":"1",
+  "Advisor":"0",
+  "Collaborator":"3",
+  "Consultant" :"2",
+  "Employee":"1",
+  "Ex-Employee" :"0"
+}
+var relationshipToColor= {
+  "Investment":{"Founder":"q2-3","Investor":"q1-3","Advisor":"q0-3",},
+  "Employment":{"Collaborator":"q3-4","Consultant":"q2-4","Employee":"q1-4","Ex-Employee":"q0-4"}
+};
+
+var link_dataset= [
+  {show: true, name: "Founder", type:"Investment", distance:120, strength:1.0},
+  {show: true, name: "Investor", type:"Investment", distance:180, strength:0.2},
+  {show: true, name: "Advisor", type:"Investment", distance:180, strength:0.4},
+  {show: true, name: "Collaborator", type:"Employment", distance:180, strength:0.8},
+  {show: true, name: "Consultant", type:"Employment", distance:180, strength:0.6},
+  {show: true, name: "Employee", type:"Employment", distance:160, strength:0.8},
+  {show: true, name: "Ex-Employee", type:"Employment", distance:300, strength:0.1}
+];
+
+//
+// legend nodes
+//
+
+var sw= 3; // stroke-width
+var ir= 20; // inner radius
+var or= 20+sw; // outer radius
+var id= 2*ir; // inner diameter 
+var od= 2*or; // outer diameter 
+
+function setNodeHighlight(x,opacity){
+  var node= d3.select(x);
+  node.attr("stroke-opacity", function(d) { return opacity; });
+  console.log(node.attr("entity")+"-"+node.attr("status"))
+  d3.selectAll("circle."+node.attr("entity")+"-"+node.attr("status"))
+    .attr("stroke-opacity", function(d) { return opacity; }); 
+}
+
+var legendNode = svg.selectAll("legend_node")
+    .data(node_dataset)
+    .enter().append("g")
+    .attr("class",function(d) { return "legend_node "+entityToColorSeries[d.entity];})
+    .attr("name",function(d) { return d.name; })
+    .attr("entity",function(d) { return d.entity; })
+    .attr("status",function(d) { return d.status; })
+    .attr("stroke-opacity", "0.2")
+    .on("mouseover", function(){ setNodeHighlight(this,"1.0"); })
+    .on("mouseout", function(){ setNodeHighlight(this,"0.2"); });
+
+legendNode.append("circle")
+    .attr("class", function(d) { return statusToColor[d.entity][d.status];})
+    .attr("r", ir)
+    .attr("cx", or)
+    .attr("cy", function(d,i){return ((i+1)*od);})
+
+legendNode.append("text")
+    .attr("class","label")
+    .attr("x", (2*or))
+    .attr("y", function(d,i){return ((i+1)*od);})
+    .text(function(d) { return d.name; });
+
+
+//
+// legend links
+//
+
+var linkLegendOffset= (node_dataset.length+1)*od;
+
+function setLinkHighlight(x,opacity) {
+  var link= d3.select(x);
+  var name= link.attr('name');
+  link.attr("stroke-opacity", function(d) { return opacity; });
+  d3.selectAll(".link."+name)
+    .attr("stroke-opacity", function(d) { return opacity; });
+}
+
+var legendLink = svg.selectAll("link")
+    .data(link_dataset)
+    .enter().append("g")
+    .attr("class",function(d) { return "legend_link "+typeToColorSeries[d.type];})
+    .attr("name",function(d) { return d.name; })
+    .attr("stroke-opacity", '0.2')
+    .on("mouseover", function(){ setLinkHighlight(this,'1.0'); })
+    .on("mouseout", function(){ setLinkHighlight(this,'0.6'); });
+
+legendLink.append("rect")
+    .attr("class", function(d) { return relationshipToColor[d.type][d.name]; })
+    .attr("x",sw)
+    .attr("y",function(d,i){return (linkLegendOffset+i*od);})
+    .attr("width",id)
+    .attr("height",id);
+
+legendLink.append("text")
+    .attr("class","label")
+    .attr("x", (2*or))
+    .attr("y", function(d,i){return (linkLegendOffset+ir+i*od);})
+    .text(function(d) { return d.name; });
+
+
+
+
+
+var margin = {top: 200, right: 40, bottom: 200, left: 40} // JCM replace this with a calc that places the timeline at the bottom of the chart
+    timelineWidth = width - margin.left - margin.right,
+    timelineHeight = 50;
+
+var x = d3.time.scale()
+    .domain([new Date(2000, 1, 1), new Date(2015, 1, 1) - 1])
+    .range([0, timelineWidth]);
+
+var brush = d3.svg.brush()
+    .x(x)
+    .extent([new Date(2002, 1, 1), new Date(2004, 1, 1)])
+    .on("brush", brushed);
+
+var g= svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+g.append("rect")
+    .attr("class", "grid-background")
+    .attr("width", timelineWidth)
+    .attr("height", timelineHeight);
+
+g.append("g")
+    .attr("class", "x grid")
+    .attr("transform", "translate(0," + timelineHeight + ")")
+    .call(d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .ticks(d3.time.months, 12)
+        .tickSize(-timelineHeight)
+        .tickFormat(""))
+  .selectAll(".tick")
+    .classed("minor", function(d) { return d.getHours(); }); // JCM hours?
+
+g.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + timelineHeight + ")")
+    .call(d3.svg.axis()
+      .scale(x)
+      .orient("bottom")
+      .ticks(d3.time.years)
+      .tickPadding(0))
+  .selectAll("text")
+    .attr("x", 6)
+    .style("text-anchor", null);
+
+var gBrush = g.append("g")
+    .attr("class", "brush")
+    .call(brush);
+
+gBrush.selectAll("rect")
+    .attr("height", timelineHeight);
+
+function brushed() {
+  var extent0 = brush.extent(),
+      extent1;
+
+  // if dragging, preserve the width of the extent
+  if (d3.event.mode === "move") {
+    var d0 = d3.time.day.round(extent0[0]),
+        d1 = d3.time.day.offset(d0, Math.round((extent0[1] - extent0[0]) / 864e5));
+    extent1 = [d0, d1];
+  }
+
+  // otherwise, if resizing, round both dates
+  else {
+    extent1 = extent0.map(d3.time.day.round);
+
+    // if empty when rounded, use floor & ceil instead
+    if (extent1[0] >= extent1[1]) {
+      extent1[0] = d3.time.day.floor(extent0[0]); // JCM round to nearest month?
+      extent1[1] = d3.time.day.ceil(extent0[1]); // JCM round to nearest month?
+    }
+  }
+
+  d3.select(this).call(brush.extent(extent1));
+}
+
+
+
+
+
+//
+// force directed graph
+//
+
+var force = d3.layout.force()
+    .gravity(0.05)
+    .linkDistance(function(d) {
+      return _.find(link_dataset,function(i){return i.name==d.relationship}).distance;
+    })
+    .linkStrength(function(d) { 
+      return _.find(link_dataset,function(i){return i.name==d.relationship}).strength;
+    })
+    .size([width, height]);
+
+//
+// click to drag a node around
+//
+var drag = force.drag().on("dragstart", dragstart);
+
+
+d3.json("network.json", function(error, network) {
+
+  update(network);
+
+  legendLink.on("click",function(d){
+    d.show= !d.show;
+    d3.select(this).select("rect").attr("class",d.show ? relationshipToColor[d.type][d.name] : "GrayedOut");
+    update(network);
+  });  
+  legendNode.on("click",function(d){
+    d.show= !d.show; 
+    d3.select(this).select("circle").attr("class",d.show ? statusToColor[d.entity][d.status] : "GrayedOut");
+    update(network);
+  });
+
+});
+
+function update(network){
+
+  //
+  // JCM i gave up trying to get in place update to work...
+  //
+  d3.selectAll(".link").remove();
+  d3.selectAll(".node").remove();
+
+  //
+  // wire up the links between the nodes
+  //
+  var showNodes= _.filter(node_dataset,function(i){return i.show;});
+  var nodes= _.compact(_.map(network.nodes, function(i){
+    return _.some(showNodes,function(j){return i.entity==j.entity && i.status==j.status}) ? i : undefined;
+  }));
+  var index= _.pluck(nodes, 'name');
+  var showLinks= _.filter(link_dataset,function(i){return i.show;});
+  var links= _.compact(_.map(network.links, function(item){
+    if(_.some(showLinks,function(j){return item.relationship==j.name;})){
+      var i= _.indexOf(index,item.from);
+      var j= _.indexOf(index,item.to);
+      var source= i>=0 ? nodes[i] : undefined;
+      var target= j>=0 ? nodes[j] : undefined;
+      return (source!=undefined && target!=undefined) ? {source:source,target:target,relationship:item.relationship,from:item.from,to:item.to,value:item.value} : undefined; 
+    }else{
+      return undefined;
+    }
+  }));
+
+  var total_value = _.reduce(_.compact(_.pluck(links, 'value')), function(memo, num){ return memo + num; }, 0);
+
+  force
+      .nodes(nodes)
+      .links(links)
+      .charge(function(d){
+        var c= -300;
+        if(d.valuation){
+          var r= 15+Math.sqrt(d.valuation)*3;
+          var c= -400-r*4;
+        }
+        return c;
+      })      
+  .start();
+
+  //
+  // link
+  //
+
+  var link = svg.selectAll(".link").data(links);
+  var es= link.enter();
+  var gs= es.append("path")
+      .attr("class", function(d) { return "link "+d.relationship })
+      .attr("from",function(d) { return d.from; })
+      .attr("to",function(d) { return d.to; })
+      .attr("stroke",function(d){ return colorbrewer[relationshipToSeries[d.relationship]][relationshipToSize[d.relationship]][relationshipToQ[d.relationship]];})
+      .attr("stroke-opacity", '0.6')
+      .attr("stroke-width", function(d) {
+        switch(d.relationship){
+          case "Founder":
+            return 12;
+            break;
+          case "Investor":
+            return 5+((d.value / total_value)*50);
+            break;
+          case "Advisor":
+            return 5+((d.value / total_value)*50);
+            break;
+          case "Collaborator":
+            return 8;
+            break;
+          case "Consultant":
+            return 8;
+            break;
+          case "Employee":
+            return 4;
+            break;
+          case "Ex-Employee":
+            return 2;
+            break;
+          default:
+            return 4;
+        }});
+  gs.append("title")
+    .text(function(d) { return d.relationship } ); 
+  link.exit().remove();
+
+
+  //
+  // node
+  //
+
+  var node = svg.selectAll("g.node").data(nodes);
+  var es= node.enter();
+  var gs= es.append("g")
+      .attr("class",function(d) { return "node "+entityToColorSeries[d.entity]; })
+      .on("dblclick", dblclick)
+      .call(drag)
+
+  gs.append("circle")
+      .attr("class", function(d) { return d.entity+"-"+d.status+" "+statusToColor[d.entity][d.status]; })
+      .attr("r", function(d){ 
+        switch(d.entity){
+          case "Person":
+            return 20;
+            break;
+          case "Company":
+            return 15+Math.sqrt(d.valuation)*3;
+            break;
+          }
+      })
+      .attr("stroke-width", function(d) { return '3'; })
+      .attr("stroke-opacity", function(d) { return '0.2'; })
+      .on("mouseover", function(){ d3.select(this).attr("stroke-opacity", "1.0"); })
+      .on("mouseout", function(){ d3.select(this).attr("stroke-opacity", "0.2"); });
+
+
+  //
+  // label for the node
+  //
+  gs.append("text")
+      .attr("class","label")
+      .attr("dx", 24)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.name });
+
+  //
+  // node tooltip
+  //
+  gs.append("title")
+      .text(function(d) { return d.name });
+
+  node.exit().remove();
+
+
+  //
+  // resizes the screen
+  //
+  d3.select(window).on('resize', function () {
+    var width = window.innerWidth, 
+      height = window.innerHeight;
+    svg.attr("width", width).attr("height", height);
+    force.size([width, height]).resume();
+  });
+
+  //
+  // Each tick move the links and node to where they should be
+  //
+
+  force.on("tick", function() {
+    //
+    // draw each link as an arc
+    //
+    link.attr("d", function(d) {
+      var dx = d.target.x - d.source.x,
+          dy = d.target.y - d.source.y,
+          dr = Math.sqrt(dx * dx + dy * dy);
+      return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+    });
+
+    node.attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  });
+};
+
+//
+// double click unfixes the node
+//
+function dblclick(d) {
+  d3.select(this).classed("fixed", d.fixed = false);
+}
+
+function dragstart(d) {
+  d3.select(this).classed("fixed", d.fixed = true);
+}
+
+</script>

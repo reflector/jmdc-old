@@ -1,0 +1,102 @@
+{
+	"nodes": [
+
+		{"name": "John Merrells", "entity": "Person" },
+		{"name": "Marcelo Oliveira", "entity": "Person"},
+		{"name": "Ashwin Phatak", "entity": "Person"},
+		{"name": "Matt Slevinski", "entity": "Person"},
+		{"name": "Walter Roth", "entity": "Person"},
+		{"name": "Luca Candela", "entity": "Person"},
+		{"name": "Ariya Hidayat", "entity": "Person"},
+		{"name": "Mike Oswell", "entity": "Person"},
+		{"name": "Tim Baur", "entity": "Person"},
+		{"name": "Jason Cline", "entity": "Person"},
+		{"name": "Egor Gripasov", "entity": "Person"},
+		{"name": "Louis Monier", "entity": "Person"},
+		{"name": "Roland Mechler", "entity": "Person"},
+		{"name": "Aditya Bansod", "entity": "Person"},
+
+        {"name": "Jovan Pehcevski", "entity": "Person"},
+        {"name": "Libby Laubscher", "entity": "Person"},
+        {"name": "Megan Balmforth", "entity": "Person"},
+        {"name": "Yasaswini Phatak", "entity": "Person"},
+
+		{"name": "JMDC", "entity": "Company", "valuation":1, "status":"Client"},
+		{"name": "Inward", "entity": "Company", "valuation":3, "status":"Client"},
+		{"name": "Kyron", "entity": "Company", "valuation":5, "status":"Client"},
+		{"name": "Kidaptive", "entity": "Company", "valuation":40, "status":"Client"},
+		{"name": "Datapad", "entity": "Company", "valuation":5, "status":"Client"},
+		{"name": "Fame4Good", "entity": "Company", "valuation":1, "status":"Client"},
+		{"name": "ShapeSecurity", "entity": "Company", "valuation":100, "status":"Client"},
+		{"name": "Medigram", "entity": "Company", "valuation":5, "status":"Client"},
+		{"name": "RelateIQ", "entity": "Company", "valuation":240, "status":"Client"},
+		{"name": "Keplers", "entity": "Company", "valuation":1, "status":"Client"},
+
+		{"name": "Sencha", "entity": "Company", "valuation":150, "status":"Alive"},
+		{"name": "Cuill", "entity": "Company", "valuation":0, "status":"Dead"},
+		{"name": "Sxip", "entity": "Company", "valuation":0, "status":"Dead"},
+
+		{"name": "Origami Logic", "entity": "Company", "valuation":20, "status":"Prospect"},
+		{"name": "Remind 101", "entity": "Company", "valuation":40, "status":"Prospect"},
+		{"name": "Open DNS", "entity": "Company", "valuation":150, "status":"Prospect"}
+
+	],
+    "links": [
+
+        {"from":"John Merrells", "to":"Inward", "relationship":"Investor", "value":10},
+        {"from":"John Merrells", "to":"Sencha", "relationship":"Investor", "value":25},
+        {"from":"John Merrells", "to":"Kidaptive", "relationship":"Investor", "value":10},
+
+        {"from":"John Merrells", "to":"Kyron", "relationship":"Advisor", "value":1.0},
+        {"from":"John Merrells", "to":"Medigram", "relationship":"Advisor", "value":2.0},
+        {"from":"John Merrells", "to":"ShapeSecurity", "relationship":"Advisor", "value":5.5},
+        {"from":"John Merrells", "to":"Fame4Good", "relationship":"Advisor", "value":0.1},
+        {"from":"John Merrells", "to":"Datapad", "relationship":"Advisor", "value":0.1},
+        {"from":"John Merrells", "to":"Inward", "relationship":"Advisor", "value":10},
+        {"from":"John Merrells", "to":"Keplers", "relationship":"Advisor", "value":0.1},
+
+        {"from":"JMDC", "to":"Kyron", "relationship":"Consultant"},
+        {"from":"JMDC", "to":"Kidaptive", "relationship":"Consultant"},
+        {"from":"JMDC", "to":"ShapeSecurity", "relationship":"Consultant"},
+        {"from":"JMDC", "to":"RelateIQ", "relationship":"Consultant"},
+
+        {"from":"John Merrells", "to":"JMDC", "relationship":"Founder"},
+        {"from":"Cuill", "to":"John Merrells", "relationship":"Ex-Employee"},
+        {"from":"Cuill", "to":"Louis Monier", "relationship":"Ex-Employee"},
+        {"from":"Louis Monier", "to":"Kyron", "relationship":"Founder"},
+
+        {"from":"Sencha", "to":"John Merrells", "relationship":"Ex-Employee"},
+        {"from":"Sencha", "to":"Marcelo Oliveira", "relationship":"Ex-Employee"},
+        {"from":"Sencha", "to":"Ashwin Phatak", "relationship":"Ex-Employee"},
+        {"from":"Sencha", "to":"Matt Slevinski", "relationship":"Ex-Employee"},
+        {"from":"Sencha", "to":"Luca Candela", "relationship":"Ex-Employee"},
+        {"from":"Sencha", "to":"Ariya Hidayat", "relationship":"Ex-Employee"},
+        {"from":"Sencha", "to":"Mike Oswell", "relationship":"Ex-Employee"},
+        {"from":"Sencha", "to":"Tim Baur", "relationship":"Ex-Employee"},
+        {"from":"Sencha", "to":"Roland Mechler", "relationship":"Ex-Employee"},
+        {"from":"Sencha", "to":"Aditya Bansod", "relationship":"Ex-Employee"},
+
+        {"from":"Sxip", "to":"John Merrells", "relationship":"Ex-Employee"},
+        {"from":"Sxip", "to":"Mike Oswell", "relationship":"Ex-Employee"},
+        {"from":"Sxip", "to":"Tim Baur", "relationship":"Ex-Employee"},
+
+        {"from":"Jason Cline", "to":"Sencha", "relationship":"Employee"},
+        {"from":"Egor Gripasov", "to":"Sencha", "relationship":"Employee"},
+        {"from":"Marcelo Oliveira", "to":"Kidaptive", "relationship":"Employee"},
+        {"from":"Matt Slevinski", "to":"Inward", "relationship":"Employee"},
+        {"from":"Walter Roth", "to":"Inward", "relationship":"Founder"},
+        {"from":"Walter Roth", "to":"JMDC", "relationship":"Advisor"},
+        {"from":"Luca Candela", "to":"Datapad", "relationship":"Employee"},
+        {"from":"Mike Oswell", "to":"Origami Logic", "relationship":"Employee"},
+        {"from":"Tim Baur", "to":"Open DNS", "relationship":"Employee"},
+        {"from":"Aditya Bansod", "to":"Remind 101", "relationship":"Employee"},
+        {"from":"Ariya Hidayat", "to":"ShapeSecurity", "relationship":"Employee"},
+
+        {"from":"Ashwin Phatak", "to":"JMDC", "relationship":"Collaborator"},
+        {"from":"Yasaswini Phatak", "to":"JMDC", "relationship":"Collaborator"},
+        {"from":"Megan Balmforth", "to":"JMDC", "relationship":"Collaborator"},
+        {"from":"Libby Laubscher", "to":"JMDC", "relationship":"Collaborator"},
+        {"from":"Jovan Pehcevski", "to":"JMDC", "relationship":"Collaborator"}
+
+    ]
+}
