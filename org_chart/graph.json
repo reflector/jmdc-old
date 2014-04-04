@@ -1,0 +1,69 @@
+{
+ "org": "JMDC",
+ "children":
+  [
+    {
+      "name": "John Merrells"
+    },
+
+    {
+      "name": "Megan"
+    },
+    {
+      "dept": "Advisors",
+      "children": [
+        {"name": "Walter Roth"},
+        {"name": "Alex Salkever"},
+        {"name": "Pete Szymanski"},
+        {"prospect": "Chaney Associates"}
+      ]
+    },
+     
+    {
+      "dept": "Branding",
+      "children": [
+        {"name": "Krista Skehan"},
+        {"prospect": "Marijane Leonard"},
+        {"prospect": "Coriander"},
+        {"name": "Le Lu"}
+      ]
+    },
+
+    {
+      "dept": "Engineering",
+      "children": [
+        {
+          "prospect": "Marcelo Olivera"
+        },
+        {
+          "name": "Ashwin",
+          "children": [ 
+            { "name": "Engineers"}
+          ]           
+        },
+        {
+          "name": "Jovan Pehcevski",
+          "children": [ 
+            { "name": "Engineers"},
+            { "name": "Researchers"}
+          ]           
+        }
+      ]
+    },
+
+    {
+      "dept": "Marketing and Sales",
+      "children": [
+        {"name": "Yasaswini Phatak"}
+      ]
+    },
+
+    {
+      "dept": "InterPlanetary Robots",
+      "children": [
+        {"name": "Libby Laubscher"},
+        {"name": "Willian Laubscher"}
+      ]
+    }
+  ]
+}
