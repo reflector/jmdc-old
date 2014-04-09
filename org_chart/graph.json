@@ -1,68 +1,90 @@
 {
- "org": "JMDC",
+ "name": "JMDC",
+ "type": "org",
  "children":
   [
     {
-      "name": "John Merrells"
+      "name": "John Merrells",
+      "desg": "CEO",
+      "img": "male",
+      "type": "person"
     },
 
     {
-      "name": "Megan"
+      "name": "Megan",
+      "desg": "Executive Assistant",
+      "img": "female",
+      "type": "person"
     },
     {
-      "dept": "Advisors",
+      "name": "Advisors",
+      "type": "dept",
       "children": [
-        {"name": "Walter Roth"},
-        {"name": "Alex Salkever"},
-        {"name": "Pete Szymanski"},
-        {"prospect": "Chaney Associates"}
+        {"name": "Walter Roth", "desg": "Sales Coach", "img": "male", "type": "person"},
+        {"name": "Alex Salkever","desg": "Writing Coach", "img": "male", "type": "person"},
+        {"name": "Pete Szymanski","desg":"General Council", "img": "male", "type": "person"},
+        {"name": "Chaney Associates","desg":"Accountant", "img": "male", "type": "person", "isProspect": true}
       ]
     },
      
     {
-      "dept": "Branding",
+      "name": "Branding",
+      "type": "dept",
       "children": [
-        {"name": "Krista Skehan"},
-        {"prospect": "Marijane Leonard"},
-        {"prospect": "Coriander"},
-        {"name": "Le Lu"}
+        {"name": "Krista Skehan", "desg": "Visual Branding", "img": "male", "type": "person"},
+        {"name": "Marijane Leonard","desg": "Editor","img": "male", "type": "person", "isProspect": true},
+        {"name": "Coriander","desg":"Photographer","img": "male", "type": "person", "isProspect": true},
+        {"name": "Le Lu", "desg": "Hair","img": "male", "type": "person"}
       ]
     },
 
     {
-      "dept": "Engineering",
+      "name": "Engineering",
+      "type": "dept",
       "children": [
         {
-          "prospect": "Marcelo Olivera"
+          "name": "Marcelo Olivera",
+          "desg":"Software Engineer",
+          "img": "male",
+          "type": "person",
+          "isProspect": true
         },
         {
           "name": "Ashwin",
+          "desg":"Development Director",
+          "img": "male",
+          "type": "person",
           "children": [ 
-            { "name": "Engineers"}
+            { "name": "Engineers", "img": "group", "type": "person"}
           ]           
         },
         {
           "name": "Jovan Pehcevski",
+          "desg": "Research Director",
+          "img": "male",
+          "type": "person",
           "children": [ 
-            { "name": "Engineers"},
-            { "name": "Researchers"}
+            { "name": "Engineers","img": "group", "type": "person"},
+            { "name": "Researchers","img": "group", "type": "person"}
           ]           
         }
       ]
     },
 
     {
-      "dept": "Marketing and Sales",
+      "name": "Marketing and Sales",
+      "type": "dept",
       "children": [
-        {"name": "Yasaswini Phatak"}
+        {"name": "Yasaswini Phatak", "desg": "Presales Manager", "img": "female", "type": "person"}
       ]
     },
 
     {
-      "dept": "InterPlanetary Robots",
+      "name": "InterPlanetary Robots",
+      "type": "dept",
       "children": [
-        {"name": "Libby Laubscher"},
-        {"name": "Willian Laubscher"}
+        {"name": "Libby Laubscher", "desg": "Writer", "img": "female", "type": "person"},
+        {"name": "Willian Laubscher","desg": "Mine crafter", "img": "male", "type": "person"}
       ]
     }
   ]
