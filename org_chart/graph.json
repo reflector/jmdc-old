@@ -1,8 +1,8 @@
 {
- "name": "JMDC",
- "type": "org",
- "children":
-  [
+"name": "JMDC",
+"type": "org",
+"children":
+[
     {
       "name": "John Merrells",
       "desg": "CEO",
