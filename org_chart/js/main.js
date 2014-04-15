@@ -115,9 +115,9 @@ function showInfo(root) {
                     .style("fill", color);
 
                     g.append("svg:image")
-                    .attr("xlink:href", "/img/male.png")
+                    .attr("xlink:href", function(d) { return d.img;})
                     .attr("x", "-60px")
-                    .attr("y", "-15px")
+                    .attr("y", "-14px")
                     .attr("width", "30px")
                     .attr("height", "30px");
 
