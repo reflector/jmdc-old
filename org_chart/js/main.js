@@ -1,18 +1,18 @@
 window.onload = function() { init() };
 
 function init() {
-    Tabletop.init({key : "0Ags86_yhVYKHdHBsSEI1RUYwa29QY3BHTnRpWUNhakE", callback: showInfo, simpleSheet: true});
+    Tabletop.init({key : "0Ags86_yhVYKHdHBsSEI1RUYwa29QY3BHTnRpWUNhakE", simpleSheet: true, callback: showInfo});
 }
 
 function showInfo(root) {
 
-    var width = 960, height = 560;
+    var width = 960, height = 600;
 
     var force = d3.layout.force()
-        .linkDistance(function(d) { if(d.target.type == "dept") { return 20 } else { return 95} })
+        .linkDistance(function(d) { if(d.target.type == "dept") { return  10; } else { return 73; } })
         .linkStrength(0.5)
         .charge(-1190)
-        .gravity(0.1)
+        .gravity(.09)
         .size([width, height])
         .on("tick", tick);
 
@@ -54,7 +54,7 @@ function showInfo(root) {
 
     function update() {
         var i = 0;
-    
+        root = structure(root);
         var nodes = flatten(root);
         var links = d3.layout.tree().links(nodes);
 
@@ -70,7 +70,7 @@ function showInfo(root) {
         link.exit().remove();
 
         link.enter().insert("line", ".node")
-        .attr("class", function(d) { console.log(d.target); if (d.target.isprospect == "Yes") {  return "link1"} else if (d.target.type == "dept") {return "link2"} else  if(d.target.type == "person" || d.target.type == "org"){ return "link"}  })
+        .attr("class", function(d) { if (d.target.isprospect == "Yes") {  return "link1"; } else if (d.target.type == "dept") { return "link2"; } else  if (d.target.type == "person" || d.target.type == "org"){ return "link"; } })
 
         // Update nodes.
         node = node.data(nodes, function(d) { return d.id; });
@@ -82,7 +82,19 @@ function showInfo(root) {
             
                 var g = d3.select(this); // That's the svg:g we've just created
                     
-                if(d.type == 'dept' || d.type == "org") {
+                if(d.type == 'dept') {
+                    
+                    g.append('ellipse')
+                    .attr("rx", function(d) { return 55; })
+                    .attr("ry", function(d) { return 20; })
+                    .style("fill", color);
+
+                    g.append("text")
+                    .attr("dy", ".35em")
+                    .style('fill', '#fff')
+                    .text(function(d) { return d.name; });
+                 
+                } else if(d.type == "org") {
                     
                     g.append('circle')
                     .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 20; })
@@ -90,36 +102,38 @@ function showInfo(root) {
 
                     g.append("text")
                     .attr("dy", ".35em")
-                    .text(function(d) { if(d.type == "person"){ return d.name } else if (d.type == "dept") { return d.name } else if (d.type == "org") { return d.name} });
+                    .text(function(d) { return d.name; });
                  
                 } else  if(d.type == "person") {
 
                     g.append('rect')
-                    .attr("width", "120px")
+                    .attr("x", "-60px")
+                    .attr("y", "-15px")
+                    .attr("width", "124px")
                     .attr("height", "30px")
                     .attr("filter", "url(#blur)")
                     .style("fill", color);
 
-                    g.append("text")
-                    .attr("dx", "70px")
-                    .attr("dy", "15px")
-                    .style("font-size", "10px")
-                    .text(function(d) { if(d.type == "person"){ return d.name } else if (d.type == "dept") { return d.name } else if (d.type == "org") { return d.name} });
-
-                    g.append("text")
-                    .attr("dx", "75px")
-                    .attr("dy", "25px")
-                    .style("fill", "#999")
-                    .style("font-size", "9px")
-                    .style("font-style", "italic")
-                    .text(function(d) { return d.desg });
-
                     g.append("svg:image")
                     .attr("xlink:href", "/img/male.png")
+                    .attr("x", "-60px")
+                    .attr("y", "-15px")
                     .attr("width", "30px")
                     .attr("height", "30px");
 
+                    g.append("text")
+                    .attr("dx", "10px")
+                    .attr("dy", "0px")
+                    .style("font-size", "10px")
+                    .text(function(d) { return d.name; });
 
+                    g.append("text")
+                    .attr("dx", "20px")
+                    .attr("dy", "10px")
+                    .style("fill", "#999")
+                    .style("font-size", "9px")
+                    .style("font-style", "italic")
+                    .text(function(d) { return d.desg; });
                 }
             })
             .attr("class", "node")
@@ -127,7 +141,7 @@ function showInfo(root) {
             .call(force.drag);
                
         node.select("text")
-            .style("font-style", function(d) { if(d.isProspect){ return "italic" } else { return "normal" }});
+            .style("font-style", function(d) { if (d.isProspect){ return "italic"; } else { return "normal"; }});
 
     }//end of update()
 
@@ -144,9 +158,8 @@ function showInfo(root) {
     function color(d) {
 
         return d.type == "org" ? "#F0740F" 
-            : d.type == "dept" ? "#3182bd"
-            : d.type == "person" ? "#BADD82"
-            : d.isProspect = Yes ? "#BADD82"
+            : d.type == "dept" ? "#4CA1DE"
+            : d.type == "person" ? "#FFF"
             : d._children ? "#092A42"  // collapsed package
             : d.children ? "#c6dbef" // expanded package
             : "#fd8d3c"; // leaf node
@@ -166,37 +179,67 @@ function showInfo(root) {
         update();
     }
 
-    // Returns a list of all nodes under the root.
-    function flatten(root) {
-        var nodes = [], id = 0, name;
+    // Returns a json structure of all nodes from the spreadsheet.
+    function structure(root) {
+        var nodes = [], id = 0, name, index = 0;
         var children = [];
 
-        function recurse(node) {
+        function grandChildrenNode(element, node) {
+            var grandChildren = [];
+            var isChildren = false;
+            
+            for (var i = 0; i < node.length; i++) {
+                if (element.name == node[i].manager) {
 
-            for(var i = 0; i < node.length; i++) {
-              
-                if (!node[i].id) {
-                  node[i].id = ++id;                  
-                }
+                    isChildren = true;
+                    grandChildren.push(node[i]);
+                    node[i] = grandChildrenNode(node[i], node);
+                }   
+            }
 
-                name = node[i].name;
+            if(isChildren == true) {
+                element.children = grandChildren;
+                grandChildren = [];
+            }
+                return element;
+        }
+
+        function childrenNode(node) {
+            for (var i = 0; i < node.length; i++) {
+                if(node[i].manager == "") {
+                    name = node[i].name;
+                    root = node[i];
+
+                    for (var j = 0; j < node.length; j++) {
+                        if(name == node[j].manager) {
+                            node[j] = grandChildrenNode(node[j], node);
+                            children.push(node[j]);//push the children to node
+                        }
+                    }
+
+                    root.children = children;
+                    children = [];
                 
-                for(var j = 0; j < node.length; j++) {
-                  
-                  if(name == node[j].manager) {
-                    
-                    children.push(node[j]);//push the children to node
+                } 
 
-                  }
-                }
-
-                node[i].children = children;
-                children = [];
-                nodes.push(node[i]);
             }
         }
 
-        recurse(root);
-        return nodes;
-    } 
+        childrenNode(root);
+        return root;
+    }
+
+    // Returns a list of all nodes under the root.
+    function flatten(root) {
+        var nodes=[], i=0;
+
+        function recurse(node) {
+            if (node.children) node.children.forEach(recurse);
+            if (!node.id) node.id=++i;
+            nodes.push(node);
+        }
+
+    recurse(root);
+    return nodes;
+  }
 }
