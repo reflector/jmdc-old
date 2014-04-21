@@ -1,0 +1,33 @@
+body {
+  background: white;
+}
+
+.place-label{
+  fill:#ccc;
+}
+.stroke {
+  fill: none;
+  stroke: #000;
+  stroke-width: 3px;
+}
+
+.fill {
+  fill: #fff;
+}
+
+.graticule {
+  fill: none;
+  stroke: #777;
+  stroke-width: .5px;
+  stroke-opacity: .1;
+}
+
+.land {
+  fill: #222;
+}
+
+.boundary {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: .5px;
+}
