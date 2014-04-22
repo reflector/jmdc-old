@@ -1,0 +1,31 @@
+[
+    {
+        "id": "IND",
+        "frequency": 35
+    },
+
+    {
+        "id": "CAN",
+        "frequency": 15
+    },
+
+    {
+        "id": "GBR",
+        "frequency": 15
+    },
+
+    {
+        "id": "AUS",
+        "frequency": 35
+    },
+
+    {
+        "id": "USA",
+        "frequency": 55
+    },
+
+    {
+        "id": "MDG",
+        "frequency": 10
+    }
+]
