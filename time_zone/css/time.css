@@ -1,0 +1,13 @@
+body {
+    background-color: #fff;
+}
+
+h1{
+    color: #888;
+    font: 24px Helvetica,sans-serif;
+    text-decoration: underline;
+}
+
+#time-zone{
+    border: 1px solid #222;
+}
