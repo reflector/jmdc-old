@@ -1,1 +1,6 @@
-[{"id":"USA","frequency":2},{"id":"IND","frequency":2},{"id":"AUS","frequency":1},{"id":"SRL","frequency":1},{"id":"UK","frequency":1},{"id":"SPN","frequency":2}]
+[
+    {"id":"USA","frequency":55},
+    {"id":"IND","frequency":35},
+    {"id":"AUS","frequency":25},
+    {"id":"GBR","frequency":35}
+]
