@@ -55,7 +55,7 @@ d3.json("js/countries_freq.json", function(error, custom) {
 });
 
 function hasFrequncey(d) {
-    console.log(d.id, d.properties.name)
+    console.log(places)
     for (var i = 0; i < places.length; i++) {
  
         if(d.id == places[i].id) {

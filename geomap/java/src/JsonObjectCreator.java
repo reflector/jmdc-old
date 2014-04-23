@@ -2,30 +2,35 @@ import java.util.HashMap;
 import java.io.*;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonWriter;
 
-public class CreateJsonObject {
+public class JsonObjectCreator {
 
-	JsonObjectBuilder buildObject = Json.createObjectBuilder();
+	JsonArrayBuilder buildArray = Json.createArrayBuilder();
 
-	public JsonObject createJson(HashMap<String, Integer> countryFreqMap) {
+	public JsonArray createJson(HashMap<String, Integer> countryFreqMap) {
 
 		Set<Entry<String, Integer>> entrySet = countryFreqMap.entrySet();
 		for (Entry<String, Integer> entry : entrySet) {
-			buildObject.add(entry.getKey(), entry.getValue());
+			buildArray.add(Json.createObjectBuilder().add("id", entry.getKey())
+					.add("frequency", entry.getValue()));
 		}
 
-		return buildObject.build();
+		return buildArray.build();
+
 	}
 
 	public void writingJsonFile(String path) throws IOException {
 
 		StringWriter stWriter = new StringWriter();
 		JsonWriter jsonWriter = Json.createWriter(stWriter);
-		jsonWriter.writeObject(buildObject.build());
+		jsonWriter.writeArray(buildArray.build());
 		jsonWriter.close();
 
 		String jsonData = stWriter.toString();

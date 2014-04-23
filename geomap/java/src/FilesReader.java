@@ -4,7 +4,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import com.csvreader.CsvReader;
 
-public class ReadFile {
+public class FilesReader {
 
 	HashMap<String, Integer> countryFreqMap = new HashMap<String, Integer>();
 	HashMap<String, String> countryCodeMap = new HashMap<String, String>();
