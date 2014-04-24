@@ -110,7 +110,7 @@ function showInfo(root) {
     .attr("cx", width/2)
     .attr("cy", height/2)
     .attr("r", radius)
-    .style("fill", "#fc9272")
+    .style("fill", "#fff")
     .style("stroke", "#ccc");
     svgContainer.append("text")
 

@@ -2,24 +2,28 @@
     {
         "from": 1,
         "to": 9,
-        "fill": "#2AC7F7"
+        "fill": "rgb(255,255,178)",
+        "zone": "coolest"
     },
 
     {
         "from": 20,
         "to": 29,
-        "fill": "#C5C20B"
+        "fill": "rgb(254,204,92)",
+        "zone": "cool"
     },
 
     {
         "from": 30,
         "to": 39,
-        "fill": "#DF7B00"
+        "fill": "rgb(253,141,60)",
+        "zone": "mild"
     },
 
     {
         "from": 40,
         "to": 59,
-        "fill": "red"
+        "fill": "rgb(227,26,28)",
+        "zone": "hot"
     }
 ]

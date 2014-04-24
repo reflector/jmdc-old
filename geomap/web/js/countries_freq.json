@@ -2,5 +2,6 @@
     {"id":"USA","frequency":55},
     {"id":"IND","frequency":35},
     {"id":"AUS","frequency":25},
-    {"id":"GBR","frequency":35}
+    {"id":"GBR","frequency":35},
+    {"id":"CAN","frequency": 5}
 ]

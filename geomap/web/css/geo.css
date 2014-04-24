@@ -31,3 +31,57 @@ body {
   stroke: #ddd;
   stroke-width: .5px;
 }
+
+.geomap{
+    width: 960px;
+    height: 580px;
+    border: 1px solid #3182bd;
+    float:left;
+}
+
+.legend{
+    background-color: #fff;
+    width: 330px;
+    min-height: 238px;
+    margin-top: 342px;
+    margin-left:20px; 
+    padding-left: 10px;
+    border: 1px solid #3182bd;
+    font: 15px Helvetica, sans-serif;
+    float:left;
+}
+
+.legend h4 {
+    text-align: left;
+}
+.legend p {
+}
+
+.hot, .mild, .cool, .coolest {
+    width:20px;
+    height:20px;
+    margin: 5px 5px 0px;
+    padding: 5px;
+    border: 1px solid #6E5832;
+}
+
+.zone{
+    float: left;
+}
+.zone_label, .freq_label {
+    float: left;
+    margin-left: 10px; 
+    margin-top: -20px;
+}
+
+.zone_label p, .freq_label p {
+    font:14px Helvetica, sans-serif;
+    color:#777;
+    line-height: 24px;
+}
+
+.zone_label span, .freq_label span { 
+    font:14px Helvetica, sans-serif;
+    color:#3182bd;
+
+}

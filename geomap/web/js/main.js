@@ -1,5 +1,9 @@
 var width = 960, height = 580, frequencyRange, places = null;
 
+var legendColor = ['rgb(255,255,178)','rgb(254,204,92)','rgb(253,141,60)','rgb(227,26,28)'];
+var legendZone = [];
+var legendZoneFreq = [];
+
 var color = d3.scale.category10();
 
 var projection = d3.geo.equirectangular()
@@ -12,7 +16,7 @@ var path = d3.geo.path()
 
 var graticule = d3.geo.graticule();
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select(".geomap").append("svg")
     .attr("width", width)
     .attr("height", height);
 
@@ -44,9 +48,12 @@ function isInFrequencyRange(frequency) {
     for(var i = 0; i < frequencyRange.length; i++) {
 
         if(frequency >= frequencyRange[i].from && frequency <= frequencyRange[i].to) {
+            legendZone[i] = frequencyRange[i].zone; 
+            legendZoneFreq[i] = " from " + frequencyRange[i].from + " to "+ frequencyRange[i].to; 
             return frequencyRange[i].fill;
         }  
     }
+
 }
 
 // Import Countries Json file 
@@ -96,6 +103,25 @@ d3.json("js/worldmap.json", function(error, world) {
 
         });
 
+    d3.select(".zone").selectAll("div")
+    .data(legendZone)
+    .enter().append("div")
+    .attr("class", function(d) { return d; });
+
+     d3.select(".zone_label").selectAll("p")
+    .data(legendZone)
+    .enter().append("p")
+    .text(function(d){return d;});
+
+     d3.select(".freq_label").selectAll("p")
+    .data(legendZoneFreq)
+    .enter().append("p")
+    .text(function(d){return d;})
+
+
+    d3.select(".zone").selectAll("div")
+    .data(legendColor)
+    .style("background-color", function(d) { return d; });
 
     svg.insert("path", ".graticule")
         .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
