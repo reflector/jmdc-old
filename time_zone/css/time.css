@@ -9,5 +9,55 @@ h1{
 }
 
 #time-zone{
-    border: 1px solid #222;
+    width: 960px;
+    height: 800px;
+    border: 1px solid #3182bd;
+    float:left;
+}
+
+.legend{
+    background-color: #fff;
+    width: 330px;
+    min-height: 238px;
+    margin-top: 242px;
+    margin-left:20px; 
+    padding-left: 10px;
+    border: 1px solid #3182bd;
+    font: 15px Helvetica, sans-serif;
+    float:left;
+}
+
+.legend h4 {
+    text-align: left;
+}
+.legend p {
+}
+
+#bg{
+    width:20px;
+    height:20px;
+    margin: 5px 5px 0px;
+    padding: 5px;
+    border: 1px solid #6E5832;
+}
+
+.people{
+    float: left;
+}
+.people_label, .freq_label {
+    float: left;
+    margin-left: 10px; 
+    margin-top: -20px;
+}
+
+.people_label p, .freq_label p {
+    font:14px Helvetica, sans-serif;
+    color:#777;
+    line-height: 24px;
+}
+
+.people_label span, .freq_label span { 
+    font:14px Helvetica, sans-serif;
+    color:#3182bd;
+
 }

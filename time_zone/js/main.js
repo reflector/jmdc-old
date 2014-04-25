@@ -21,6 +21,9 @@ function main(root, root2) {
     var centerX = width/2;
     var centerY = height/2;
 
+    var clockvalueoffsetX = [3, 0, 4, 5, 4, 0, -10, -20, -20, -20, -15, -17];
+    var clockvalueoffsetY = [-4, -100, -4, 0, 10, 14, 13, 14, 10, 0, -1, -3];
+
     var x, y = 0;
 
     var now = new Date;
@@ -31,6 +34,10 @@ function main(root, root2) {
     var utc_hours = date.getUTCHours();
 
     var UTCstring = (new Date()).toUTCString();
+
+    var timezonePeople = [];
+
+    var timezoneColor = [];  
 
 
     //degrees to radians...
@@ -70,6 +77,7 @@ function main(root, root2) {
         var a = radians;
         x = Math.cos(a) * radius + centerX;
         y = Math.sin(a) * radius + centerY;
+        return x,y;
     }
 
 
@@ -78,9 +86,7 @@ function main(root, root2) {
 
     var lineData = [{ "x": centerX,   "y": centerY},  { "x": x,  "y": y }];
 
-
-    var svgContainer = d3.select("body").append("svg")
-        .attr("id", "time-zone")
+    var svgContainer = d3.select("#time-zone").append("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g")
@@ -136,26 +142,69 @@ function main(root, root2) {
         .attr("stroke", "blue")
         .attr("stroke-width", 1)
         .attr("fill", "none");
-
     svgContainer.append("text")
         .attr("dx", width/2 -3)
         .attr("dy", height/2 - radius -5)
         .text("0");
 
     svgContainer.append("text")
+        .attr("dx", 533)
+        .attr("dy", 309)
+        .text("2");
+
+    svgContainer.append("text")
+    .attr("dx", 570)
+    .attr("dy", 345)
+    .text("4");
+
+
+    svgContainer.append("text")
+    .attr("dx", 570)
+    .attr("dy", 460)
+    .text("8");
+
+
+    svgContainer.append("text")
+        .attr("dx", 530)
+        .attr("dy", 500)
+        .text("10");
+
+
+    svgContainer.append("text")
         .attr("dx", width/2 -10)
         .attr("dy", height/2 + radius + 13)
         .text("12");
+
+
+    svgContainer.append("text")
+        .attr("dx", 410)
+        .attr("dy", 500)
+        .text("14");
 
     svgContainer.append("text")
         .attr("dx", width/2 + radius + 5)
         .attr("dy", height/2)
         .text("6");
 
+     svgContainer.append("text")
+        .attr("dx", 373)
+        .attr("dy", 460)
+        .text("16");
+
     svgContainer.append("text")
         .attr("dx", width/2 - radius - 20)
         .attr("dy", height/2)
         .text("18");
+
+    svgContainer.append("text")
+        .attr("dx", 377)
+        .attr("dy", 349)
+        .text("20");
+
+    svgContainer.append("text")
+        .attr("dx", 412)
+        .attr("dy", 310)
+        .text("22");
 
     function getTimeZone (record) {
         for(var j = 0; j< root2.length; j++) {
@@ -165,6 +214,7 @@ function main(root, root2) {
         }
     }
     var count = 0;
+    var legendcount = 0;
     for(var i = 0; i< root.length; i++) {
      
         if(root[i].timezone != "") {
@@ -172,40 +222,95 @@ function main(root, root2) {
             var ir = radius + (30 * (count) );
             var color = root[i].color;
             var name = root[i].name;
-            var checkin = parseFloat(root[i].checkin);
+            var initials = root[i].intials
+        
+            //Creating Arrays for timezone people and color to display in legend
+            timezonePeople[legendcount] = name + " [ " + initials + " ] ";
+            timezoneColor[legendcount] = color;
+            
+            legendcount = legendcount + 1;
+
+            // split Multiple time checkin and checkouts
+            var checkin = root[i].checkin;
+            var checkout = root[i].checkout;
+            
+            checkin = checkin.split(",");
+            checkout = checkout.split(",");
+            
             var timezone = getTimeZone(root[i]);
 
-            checkin = checkin - timezone;
-            checkin = 15 * checkin;
-            checkin = toRadians(checkin);
-            var checkout = parseFloat(root[i].checkout);
-            checkout = checkout - timezone;
-            checkout = 15 * checkout;
-            checkout = toRadians(checkout);
+            if(checkin.length == checkout.length) {
+                
+                for (var k = 0; k < checkin.length; k++) { 
+                    
+                    var getcheckin = parseFloat(checkin[k]) - timezone;
+                    getcheckin = 15 * getcheckin;
+                    getcheckin = toRadians(getcheckin);
+                    
+                    var getcheckout = parseFloat(checkout[k]) - timezone;
+                    getcheckout = 15 * getcheckout;
+                    getcheckout = toRadians(getcheckout);
 
-            var arc = d3.svg.arc()
-            .innerRadius(ir)
-            .outerRadius(ir + 20)
-            .startAngle(checkin)
-            .endAngle(checkout);
+                    var arc = d3.svg.arc()
+                        .innerRadius(ir)
+                        .outerRadius(ir + 20)
+                        .startAngle(getcheckin)
+                        .endAngle(getcheckout);
 
-            svgContainer.append("svg:path")
-            .attr("id", function(){return "path" + count})
-            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-            .attr("fill", color )
-            .attr("stroke", "#ccc")
-            .attr("d", arc);
+                    svgContainer.append("svg:path")
+                        .attr("id", function(){return "path" + count})
+                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+                        .attr("fill", color )
+                        .attr("stroke", "#ccc")
+                        .attr("d", arc);
+                }
+
+            } else {
+
+                var getcheckin = parseFloat(checkin[0]) - timezone;
+                getcheckin = 15 * getcheckin;
+                getcheckin = toRadians(getcheckin);
+                    
+                var getcheckout = parseFloat(checkout[0]) - timezone;
+                getcheckout = 15 * getcheckout;
+                getcheckout = toRadians(getcheckout);
+
+                var arc = d3.svg.arc()
+                    .innerRadius(ir)
+                    .outerRadius(ir + 20)
+                    .startAngle(getcheckin)
+                    .endAngle(getcheckout);
+
+                svgContainer.append("svg:path")
+                    .attr("id", function(){return "path" + count})
+                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+                    .attr("fill", color )
+                    .attr("stroke", "#ccc")
+                    .attr("d", arc);
+            }
 
             var text = svgContainer.append("text")
-            .attr("x", 10)
-            .attr("dy", 15);
+                .attr("x", 10)
+                .attr("dy", 15);
 
             text.append("textPath")
-            .attr("stroke", "black")
-            .attr("xlink:href", function(){return "#path" + count})
-            .style("font", "14px verdena,sans-serif")
-            .style("font-weight", 100)
-            .text(name);
+                .attr("stroke", "black")
+                .attr("xlink:href", function(){return "#path" + count})
+                .style("font", "14px verdena,sans-serif")
+                .style("font-weight", 100)
+                .text(initials);
         }
     }
+
+    //Attach Div's and partagraph to dom elements.
+    d3.select(".people").selectAll("div")
+        .data(timezoneColor)
+        .enter().append("div")
+        .attr("id", "bg")
+        .style("background-color", function(d) { return d; });
+
+    d3.select(".people_label").selectAll("p")
+        .data(timezonePeople)
+        .enter().append("p")
+        .text(function(d){return d;});
 }
