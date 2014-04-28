@@ -1,15 +1,15 @@
 window.onload = function() { init() };
 
 function init() {
-    Tabletop.init({key : "0Ags86_yhVYKHdHBsSEI1RUYwa29QY3BHTnRpWUNhakE", simpleSheet: true, callback: getSpreadSheet});
+    Tabletop.init({key : "0Ags86_yhVYKHdHBsSEI1RUYwa29QY3BHTnRpWUNhakE", simpleSheet: true, callback: getSpreadSheet1});
 }
 
-function getSpreadSheet(root) {
+function getSpreadSheet1(root) {
     var root = root;
 
-    Tabletop.init({key : "0Ags86_yhVYKHdEtWWk5PeUhDWEh2RTVEd3ZiNWFiWVE", simpleSheet: true, callback: getSpreadSheet2});
+    Tabletop.init({key : "0Ags86_yhVYKHdEtWWk5PeUhDWEh2RTVEd3ZiNWFiWVE", simpleSheet: true, callback: getSpreadSheet12});
 
-    function getSpreadSheet2(root2) {
+    function getSpreadSheet12(root2) {
         main(root, root2);
     }
 }
@@ -17,24 +17,26 @@ function getSpreadSheet(root) {
 function main(root, root2) {
 
     var width = 960, height = 800;
+    var radius = 100;
     //var color = ['rgb(239,243,255)','rgb(189,215,231)','rgb(107,174,214)','rgb(33,113,181)'];
     var centerX = width/2;
     var centerY = height/2;
 
-    var clockvalueoffsetX = [3, 0, 4, 5, 4, 0, -10, -20, -20, -20, -15, -17];
-    var clockvalueoffsetY = [-4, -100, -4, 0, 10, 14, 13, 14, 10, 0, -1, -3];
+    var clockValueoOffsetX = [0, 3, 4, 5, 4, 0, -10, -20, -20, -20, -15, -17];
+    var clockValueoOffsetY = [-4, -3, -1, 0, 10, 14, 13, 14, 10, 0, -1, -3];
 
     var x, y = 0;
 
-    var now = new Date;
-
-    var radius = 100;
-
     var date = new Date();
-    var utc_hours = date.getUTCHours();
+    var UTCHours = date.getUTCHours();
 
-    var UTCstring = (new Date()).toUTCString();
+    var UTCMinutes = date.getUTCMinutes();
+    UTCMinutes = UTCMinutes/100;
+    UTCHours = UTCHours + UTCMinutes;
 
+    var UTCString = date.toUTCString();
+
+    //for legend...
     var timezonePeople = [];
 
     var timezoneColor = [];  
@@ -47,26 +49,27 @@ function main(root, root2) {
     }
 
     //get Degrees... for UTC Hours
-    function getDegrees(utc_hours) {
+    function getDegrees(UTCHours) {
 
         var degrees;
-        if(utc_hours >= 0 && utc_hours <= 6 ) {
-            degrees = 270 + (utc_hours * 15);
+
+        if(UTCHours >= 0 && UTCHours <= 6 ) {
+            degrees = 270 + (UTCHours * 15);
         }
 
-        if(utc_hours > 6 && utc_hours <= 12 ) {
-            utc_hours = utc_hours -6;
-            degrees = 0 + (utc_hours * 15);
+        if(UTCHours > 6 && UTCHours <= 12 ) {
+            UTCHours = UTCHours -6;
+            degrees = 0 + (UTCHours * 15);
         }
 
-        if(utc_hours > 12 && utc_hours <= 18 ) {
-            utc_hours = utc_hours -12;
-            degrees = 90 + (utc_hours * 15);
+        if(UTCHours > 12 && UTCHours <= 18 ) {
+            UTCHours = UTCHours -12;
+            degrees = 90 + (UTCHours * 15);
         }
 
-        if(utc_hours > 18 && utc_hours <= 23 ) {
-            utc_hours = utc_hours -18;
-            degrees = 180 + (utc_hours * 15);
+        if(UTCHours > 18 && UTCHours <= 23 ) {
+            UTCHours = UTCHours -18;
+            degrees = 180 + (UTCHours * 15);
         }
         
         return degrees;
@@ -75,13 +78,13 @@ function main(root, root2) {
     //get circumference coordinates for pointer in circle...
     function getCoordinates(radians) {
         var a = radians;
+
         x = Math.cos(a) * radius + centerX;
         y = Math.sin(a) * radius + centerY;
-        return x,y;
     }
 
 
-    var radians = toRadians(getDegrees(utc_hours));
+    var radians = toRadians(getDegrees(UTCHours));
     getCoordinates(radians);
 
     var lineData = [{ "x": centerX,   "y": centerY},  { "x": x,  "y": y }];
@@ -97,12 +100,12 @@ function main(root, root2) {
         .attr("dy", 30)
         .text("JMDC Time zone visualization")
         .style("font-size", "24px")
-        .style("fill", "#ccc");
+        .style("fill", "#3182bd");
 
     svgContainer.append("text")
         .attr("dx", 10)
         .attr("dy", 70)
-        .text(UTCstring)
+        .text(UTCString)
         .style("fill", "#888");
 
 
@@ -110,17 +113,9 @@ function main(root, root2) {
         .x(function(d) { return d.x; })
         .y(function(d) { return d.y; })
         .interpolate("linear");
+    
 
-
-
-    //Draw the path which shows time on the circle
-    svgContainer.append("path")
-        .attr("d", lineFunction(lineData))
-        .attr("stroke", "blue")
-        .attr("stroke-width", 20)
-        .attr("fill", "none");
-
-    //Draw the Circle
+    //Circle
     var circle = svgContainer.append("circle")
         .attr("cx", width/2)
         .attr("cy", height/2)
@@ -129,6 +124,7 @@ function main(root, root2) {
         .style("stroke", "#ccc");
         svgContainer.append("text")
 
+    // Small Circle 
     var circle = svgContainer.append("circle")
         .attr("cx", width/2)
         .attr("cy", height/2)
@@ -137,74 +133,26 @@ function main(root, root2) {
         .style("stroke", "black");
         svgContainer.append("text")
 
+    //Draw the path which shows time on the circle
     svgContainer.append("path")
         .attr("d", lineFunction(lineData))
         .attr("stroke", "blue")
         .attr("stroke-width", 1)
         .attr("fill", "none");
-    svgContainer.append("text")
-        .attr("dx", width/2 -3)
-        .attr("dy", height/2 - radius -5)
-        .text("0");
 
-    svgContainer.append("text")
-        .attr("dx", 533)
-        .attr("dy", 309)
-        .text("2");
+    var n =0;
+    for(var m = 0; m < 12; m++) {
 
-    svgContainer.append("text")
-    .attr("dx", 570)
-    .attr("dy", 345)
-    .text("4");
-
-
-    svgContainer.append("text")
-    .attr("dx", 570)
-    .attr("dy", 460)
-    .text("8");
-
-
-    svgContainer.append("text")
-        .attr("dx", 530)
-        .attr("dy", 500)
-        .text("10");
-
-
-    svgContainer.append("text")
-        .attr("dx", width/2 -10)
-        .attr("dy", height/2 + radius + 13)
-        .text("12");
-
-
-    svgContainer.append("text")
-        .attr("dx", 410)
-        .attr("dy", 500)
-        .text("14");
-
-    svgContainer.append("text")
-        .attr("dx", width/2 + radius + 5)
-        .attr("dy", height/2)
-        .text("6");
-
-     svgContainer.append("text")
-        .attr("dx", 373)
-        .attr("dy", 460)
-        .text("16");
-
-    svgContainer.append("text")
-        .attr("dx", width/2 - radius - 20)
-        .attr("dy", height/2)
-        .text("18");
-
-    svgContainer.append("text")
-        .attr("dx", 377)
-        .attr("dy", 349)
-        .text("20");
-
-    svgContainer.append("text")
-        .attr("dx", 412)
-        .attr("dy", 310)
-        .text("22");
+        radians = toRadians(getDegrees(n));
+        getCoordinates(radians);
+        svgContainer.append("text")
+            .attr("dx", x + clockValueoOffsetX[m])
+            .attr("dy", y + clockValueoOffsetY[m])
+            .text(n)
+            .style("fill", function() { if(n == 0 || n == 6 || n == 12 || n == 18 ) {return "#FF9B03";} else {return "black";} });
+            console.log();
+        n = n + 2;
+    }
 
     function getTimeZone (record) {
         for(var j = 0; j< root2.length; j++) {
@@ -213,8 +161,35 @@ function main(root, root2) {
             }
         }
     }
+
     var count = 0;
     var legendcount = 0;
+
+
+    //Get Arc's over the circle 
+    function getArcs(k) {
+        var getcheckin = parseFloat(checkin[k]) - timezone;
+            getcheckin = 15 * getcheckin;
+            getcheckin = toRadians(getcheckin);
+            
+        var getcheckout = parseFloat(checkout[k]) - timezone;
+        getcheckout = 15 * getcheckout;
+        getcheckout = toRadians(getcheckout);
+
+        var arc = d3.svg.arc()
+            .innerRadius(ir)
+            .outerRadius(ir + 20)
+            .startAngle(getcheckin)
+            .endAngle(getcheckout);
+
+        svgContainer.append("svg:path")
+            .attr("id", function(){return "path" + count})
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+            .attr("fill", color )
+            .attr("stroke", "#ccc")
+            .attr("d", arc);
+    }
+
     for(var i = 0; i< root.length; i++) {
      
         if(root[i].timezone != "") {
@@ -242,51 +217,12 @@ function main(root, root2) {
             if(checkin.length == checkout.length) {
                 
                 for (var k = 0; k < checkin.length; k++) { 
-                    
-                    var getcheckin = parseFloat(checkin[k]) - timezone;
-                    getcheckin = 15 * getcheckin;
-                    getcheckin = toRadians(getcheckin);
-                    
-                    var getcheckout = parseFloat(checkout[k]) - timezone;
-                    getcheckout = 15 * getcheckout;
-                    getcheckout = toRadians(getcheckout);
-
-                    var arc = d3.svg.arc()
-                        .innerRadius(ir)
-                        .outerRadius(ir + 20)
-                        .startAngle(getcheckin)
-                        .endAngle(getcheckout);
-
-                    svgContainer.append("svg:path")
-                        .attr("id", function(){return "path" + count})
-                        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-                        .attr("fill", color )
-                        .attr("stroke", "#ccc")
-                        .attr("d", arc);
+                    getArcs(k);
                 }
 
             } else {
 
-                var getcheckin = parseFloat(checkin[0]) - timezone;
-                getcheckin = 15 * getcheckin;
-                getcheckin = toRadians(getcheckin);
-                    
-                var getcheckout = parseFloat(checkout[0]) - timezone;
-                getcheckout = 15 * getcheckout;
-                getcheckout = toRadians(getcheckout);
-
-                var arc = d3.svg.arc()
-                    .innerRadius(ir)
-                    .outerRadius(ir + 20)
-                    .startAngle(getcheckin)
-                    .endAngle(getcheckout);
-
-                svgContainer.append("svg:path")
-                    .attr("id", function(){return "path" + count})
-                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-                    .attr("fill", color )
-                    .attr("stroke", "#ccc")
-                    .attr("d", arc);
+                getArcs(0);
             }
 
             var text = svgContainer.append("text")
@@ -302,7 +238,7 @@ function main(root, root2) {
         }
     }
 
-    //Attach Div's and partagraph to dom elements.
+    //Attach Div's and Paragraph to DOM elements.
     d3.select(".people").selectAll("div")
         .data(timezoneColor)
         .enter().append("div")
