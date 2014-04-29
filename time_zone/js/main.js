@@ -16,14 +16,29 @@ function getSpreadSheet1(root) {
 
 function main(root, root2) {
 
+    function numRange(root) { 
+        var count = 0;
+        for(var i = 0; i < root.length; i++) { 
+            if(root[i].timezone != "") { 
+                count = count + 1;
+            }
+        }
+        return count;
+    };
+
+    var numC = 4;
+
+
     var width = 960, height = 800;
     var radius = 100;
-    //var color = ['rgb(239,243,255)','rgb(189,215,231)','rgb(107,174,214)','rgb(33,113,181)'];
+    
+
+    
     var centerX = width/2;
     var centerY = height/2;
 
     var clockValueoOffsetX = [0, 3, 4, 5, 4, 0, -10, -20, -20, -20, -15, -17];
-    var clockValueoOffsetY = [-4, -3, -1, 0, 10, 14, 13, 14, 10, 0, -1, -3];
+    var clockValueoOffsetY = [-4, -3, -1, 0, 10, 14, 15, 14, 10, 0, -1, -3];
 
     var x, y = 0;
 
@@ -165,29 +180,46 @@ function main(root, root2) {
     var count = 0;
     var legendcount = 0;
 
-
+    var colorIndex = -1;
+    var colorMapIndex = -1;
+    var colorMapName = ['Blues', 'Reds', 'Greens', 'Purples', 'Oranges', 'Greys', 'BrBg'];
+    var colorSet;
     //Get Arc's over the circle 
-    function getArcs(k) {
-        var getcheckin = parseFloat(checkin[k]) - timezone;
-            getcheckin = 15 * getcheckin;
-            getcheckin = toRadians(getcheckin);
+    function getArcs(k,status) {
+        var p1, p2;
+        
+        if(k == 0 && status == "checkin") {
+            colorIndex = colorIndex + 1;
+            colorMapIndex = colorMapIndex + 1;
+            colorSet = colorbrewer[colorMapName[colorMapIndex]];
+        }
+
+        if(status == "checkin") {
+            p1 = parseFloat(checkin[k]) - timezone;
+            p2 = parseFloat(checkout[k]) - timezone;
+        } else if(status == "availability"){
+            p1 = parseFloat(availabilityfrom[k]) - timezone;
+            p2 = parseFloat(availabilitytill[k]) - timezone;
+        }
             
-        var getcheckout = parseFloat(checkout[k]) - timezone;
-        getcheckout = 15 * getcheckout;
-        getcheckout = toRadians(getcheckout);
+            p1 = 15 * p1;
+            p1 = toRadians(p1);
+
+            p2 = 15 * p2;
+            p2 = toRadians(p2);
 
         var arc = d3.svg.arc()
             .innerRadius(ir)
             .outerRadius(ir + 20)
-            .startAngle(getcheckin)
-            .endAngle(getcheckout);
+            .startAngle(p1)
+            .endAngle(p2);
 
         svgContainer.append("svg:path")
             .attr("id", function(){return "path" + count})
             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-            .attr("fill", color )
+            .attr("fill", function(){ if(status == "checkin") { timezoneColor[colorIndex] = colorSet[9][4]; return colorSet[9][4]; } else if(status == "availability") {return colorSet[9][2];} } )
             .attr("stroke", "#ccc")
-            .attr("d", arc);
+            .attr("d", arc)
     }
 
     for(var i = 0; i< root.length; i++) {
@@ -198,10 +230,11 @@ function main(root, root2) {
             var color = root[i].color;
             var name = root[i].name;
             var initials = root[i].intials
-        
+            var availabilityfrom =  parseFloat(root[i].availabilityfrom);
+            var availabilitytill =  parseFloat(root[i].availabilitytill);
             //Creating Arrays for timezone people and color to display in legend
             timezonePeople[legendcount] = name + " [ " + initials + " ] ";
-            timezoneColor[legendcount] = color;
+            
             
             legendcount = legendcount + 1;
 
@@ -217,13 +250,27 @@ function main(root, root2) {
             if(checkin.length == checkout.length) {
                 
                 for (var k = 0; k < checkin.length; k++) { 
-                    getArcs(k);
+                    getArcs(k, "checkin");
                 }
 
             } else {
 
-                getArcs(0);
+                getArcs(0, "checkin");
             }
+
+            var availabilityfrom =  root[i].availabilityfrom;
+            var availabilitytill =  root[i].availabilitytill;
+
+            availabilityfrom = availabilityfrom.split(",");
+            availabilitytill = availabilitytill.split(",");
+
+            if(availabilityfrom.length == availabilitytill.length)
+            {
+                for (var k = 0; k < availabilityfrom.length; k++) {
+                    getArcs(k, "availability")
+                }
+            }
+            
 
             var text = svgContainer.append("text")
                 .attr("x", 10)
