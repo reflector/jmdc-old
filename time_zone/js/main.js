@@ -1,44 +1,75 @@
 window.onload = function() { init() };
 
 function init() {
-    Tabletop.init({key : "0Ags86_yhVYKHdHBsSEI1RUYwa29QY3BHTnRpWUNhakE", simpleSheet: true, callback: getSpreadSheet1});
+    Tabletop.init({key : "0Ags86_yhVYKHdHBsSEI1RUYwa29QY3BHTnRpWUNhakE", simpleSheet: true, callback: getpeopleSpreadsheet});
 }
 
-function getSpreadSheet1(root) {
-    var root = root;
+function getpeopleSpreadsheet(peopleSpreadsheet) {
+    var peopleSpreadsheet = peopleSpreadsheet;
 
-    Tabletop.init({key : "0Ags86_yhVYKHdEtWWk5PeUhDWEh2RTVEd3ZiNWFiWVE", simpleSheet: true, callback: getSpreadSheet12});
+    Tabletop.init({key : "0Ags86_yhVYKHdEtWWk5PeUhDWEh2RTVEd3ZiNWFiWVE", simpleSheet: true, callback: gettimezoneSpreadsheet});
 
-    function getSpreadSheet12(root2) {
-        main(root, root2);
+    function gettimezoneSpreadsheet(timezoneSpreadsheet) {
+        main(peopleSpreadsheet, timezoneSpreadsheet);
     }
 }
 
-function main(root, root2) {
+function main(peopleSpreadsheet, timezoneSpreadsheet) {
+    
+    //Constants
+    var ANGLE_0 = 0;
+    var ANGLE_90 = 90;
+    var ANGLE_180 = 180;
+    var ANGLE_270 = 270;
 
-    function numRange(root) { 
-        var count = 0;
-        for(var i = 0; i < root.length; i++) { 
-            if(root[i].timezone != "") { 
-                count = count + 1;
-            }
-        }
-        return count;
-    };
+    var NUM_0 = 0;
+    var NUM_6 = 6;
+    var NUM_12 = 12;
+    var NUM_18 = 18;
+    var NUM_23 = 23;
+    
+    var DEGREES_DIFF = 15;
 
-    var numC = 4;
+    var CLOCK_QUADRANT_DIGIT_COLOR = "#FF9B03";
+    var DEFAULT_CLOCK_DIGIT_COLOR = "black"
+    var CLOCK_POINTER_COLOR = "blue";
+    var CLOCK_BG = "#fff"
+    var CLOCK_STROKE = "#ccc"
+
+    var CIRCLE2_BG = "black";
+    var CIRCLE2_STROKE = "black"
+    var GET_CLOCK_DIGITS = 12;
+
+    var CB_SET_1 = 9;
+    var CB_SET_2 = 4;
+    var CB_SET_3 = 2;
+
+    var ARC_OFFSET = 20;
+    var ARC_TEXT_X_OFFSET = 10;
+    var ARC_TEXT_Y_OFFSET = 15;
+    var ARC_INNER_RADIUS = 30;
+
+    var SVG_LABEL1_X_OFFSET = 10;
+    var SVG_LABEL1_Y_OFFSET = 30;
+    var SVG_LABEL1_COLOR = "#3182bd";
 
 
+    var SVG_LABEL2_X_OFFSET = 10;
+    var SVG_LABEL2_Y_OFFSET = 70;
+    var SVG_LABEL2_COLOR = "#ccc";
+
+
+    //Variables
     var width = 960, height = 800;
     var radius = 100;
     
+    var centerX = width / 2;
+    var centerY = height / 2;
 
+    var clockValueOffsetX = [0, 3, 4, 5, 4, 0, -10, -20, -20, -20, -15, -17];
+    var clockValueOffsetY = [-4, -3, -1, 0, 10, 14, 15, 14, 10, 0, -1, -3];
     
-    var centerX = width/2;
-    var centerY = height/2;
-
-    var clockValueoOffsetX = [0, 3, 4, 5, 4, 0, -10, -20, -20, -20, -15, -17];
-    var clockValueoOffsetY = [-4, -3, -1, 0, 10, 14, 15, 14, 10, 0, -1, -3];
+    var clockDigit = 0;
 
     var x, y = 0;
 
@@ -46,7 +77,7 @@ function main(root, root2) {
     var UTCHours = date.getUTCHours();
 
     var UTCMinutes = date.getUTCMinutes();
-    UTCMinutes = UTCMinutes/100;
+    UTCMinutes = UTCMinutes / 100;
     UTCHours = UTCHours + UTCMinutes;
 
     var UTCString = date.toUTCString();
@@ -54,12 +85,19 @@ function main(root, root2) {
     //for legend...
     var timezonePeople = [];
 
-    var timezoneColor = [];  
+    var timezoneColor = [];
 
+    var personCount = 0;
+    var legendCount = 0;
 
+    var colorIndex = -1;
+    var colorMapIndex = -1;
+    var colorMapName = ['Blues', 'Reds', 'Greens', 'Purples', 'Oranges', 'Greys'];
+    var colorSet;
+
+    
     //degrees to radians...
-    function toRadians(value)
-    {
+    function toRadians(value) {
         return value * Math.PI / 180
     }
 
@@ -68,23 +106,23 @@ function main(root, root2) {
 
         var degrees;
 
-        if(UTCHours >= 0 && UTCHours <= 6 ) {
-            degrees = 270 + (UTCHours * 15);
+        if(UTCHours >= NUM_0 && UTCHours <= NUM_6 ) {
+            degrees = ANGLE_270 + (UTCHours * DEGREES_DIFF);
         }
 
-        if(UTCHours > 6 && UTCHours <= 12 ) {
-            UTCHours = UTCHours -6;
-            degrees = 0 + (UTCHours * 15);
+        if(UTCHours > NUM_6 && UTCHours <= NUM_12 ) {
+            UTCHours = UTCHours - NUM_6;
+            degrees = ANGLE_0 + (UTCHours * DEGREES_DIFF);
         }
 
-        if(UTCHours > 12 && UTCHours <= 18 ) {
-            UTCHours = UTCHours -12;
-            degrees = 90 + (UTCHours * 15);
+        if(UTCHours > NUM_12 && UTCHours <= NUM_18 ) {
+            UTCHours = UTCHours - NUM_12;
+            degrees = ANGLE_90 + (UTCHours * DEGREES_DIFF);
         }
 
-        if(UTCHours > 18 && UTCHours <= 23 ) {
-            UTCHours = UTCHours -18;
-            degrees = 180 + (UTCHours * 15);
+        if(UTCHours > NUM_18 && UTCHours <= NUM_23 ) {
+            UTCHours = UTCHours - NUM_18;
+            degrees = ANGLE_180 + (UTCHours * DEGREES_DIFF);
         }
         
         return degrees;
@@ -102,94 +140,90 @@ function main(root, root2) {
     var radians = toRadians(getDegrees(UTCHours));
     getCoordinates(radians);
 
-    var lineData = [{ "x": centerX,   "y": centerY},  { "x": x,  "y": y }];
+    var lineData = [{ "x": centerX, "y": centerY},  { "x": x,  "y": y }];
 
+    //SVG...
     var svgContainer = d3.select("#time-zone").append("svg")
         .attr("width", width)
         .attr("height", height)
-        .append("g")
+        .append("g");
+
+    //Circle - CLOCK
+    var circle = svgContainer.append("circle")
+        .attr("cx", centerX)
+        .attr("cy", centerY)
+        .attr("r", radius)
+        .style("fill", CLOCK_BG)
+        .style("stroke", CLOCK_STROKE);
+
+    // Small Circle 
+    var circle = svgContainer.append("circle")
+        .attr("cx", centerX)
+        .attr("cy", centerY)
+        .attr("r", 2)
+        .style("fill", CIRCLE2_BG)
+        .style("stroke", CIRCLE2_STROKE);
 
 
+    //label1
     svgContainer.append("text")
-        .attr("dx", 10)
-        .attr("dy", 30)
+        .attr("dx", SVG_LABEL1_X_OFFSET)
+        .attr("dy", SVG_LABEL1_Y_OFFSET)
         .text("JMDC Time zone visualization")
         .style("font-size", "24px")
-        .style("fill", "#3182bd");
+        .style("fill", SVG_LABEL1_COLOR);
 
+    //label2
     svgContainer.append("text")
-        .attr("dx", 10)
-        .attr("dy", 70)
+        .attr("dx", SVG_LABEL2_X_OFFSET)
+        .attr("dy", SVG_LABEL2_Y_OFFSET)
         .text(UTCString)
-        .style("fill", "#888");
+        .style("fill", SVG_LABEL2_COLOR);
 
 
     var lineFunction = d3.svg.line()
         .x(function(d) { return d.x; })
         .y(function(d) { return d.y; })
         .interpolate("linear");
-    
-
-    //Circle
-    var circle = svgContainer.append("circle")
-        .attr("cx", width/2)
-        .attr("cy", height/2)
-        .attr("r", radius)
-        .style("fill", "#fff")
-        .style("stroke", "#ccc");
-        svgContainer.append("text")
-
-    // Small Circle 
-    var circle = svgContainer.append("circle")
-        .attr("cx", width/2)
-        .attr("cy", height/2)
-        .attr("r", 2)
-        .style("fill", "black")
-        .style("stroke", "black");
-        svgContainer.append("text")
 
     //Draw the path which shows time on the circle
     svgContainer.append("path")
         .attr("d", lineFunction(lineData))
-        .attr("stroke", "blue")
+        .attr("stroke", CLOCK_POINTER_COLOR)
         .attr("stroke-width", 1)
         .attr("fill", "none");
 
-    var n =0;
-    for(var m = 0; m < 12; m++) {
+    for(var m = 0; m < GET_CLOCK_DIGITS; m++) {
 
-        radians = toRadians(getDegrees(n));
+        radians = toRadians(getDegrees(clockDigit));
         getCoordinates(radians);
         svgContainer.append("text")
-            .attr("dx", x + clockValueoOffsetX[m])
-            .attr("dy", y + clockValueoOffsetY[m])
-            .text(n)
-            .style("fill", function() { if(n == 0 || n == 6 || n == 12 || n == 18 ) {return "#FF9B03";} else {return "black";} });
-            console.log();
-        n = n + 2;
+            .attr("dx", x + clockValueOffsetX[m])
+            .attr("dy", y + clockValueOffsetY[m])
+            .text(clockDigit)
+            .style("fill", function() { if(clockDigit == NUM_0 || clockDigit == NUM_6 || clockDigit == NUM_12 || clockDigit == NUM_18 ) {return CLOCK_QUADRANT_DIGIT_COLOR;} else {return DEFAULT_CLOCK_DIGIT_COLOR;} });
+        clockDigit = clockDigit + 2;
     }
 
     function getTimeZone (record) {
-        for(var j = 0; j< root2.length; j++) {
-            if(record.timezone == root2[j].code && record.zone == root2[j].zone) {
-                return parseFloat(root2[j].timezone);
+        for(var j = 0; j < timezoneSpreadsheet.length; j++) {
+            if(record.timezone == timezoneSpreadsheet[j].code && record.zone == timezoneSpreadsheet[j].zone) {
+                return parseFloat(timezoneSpreadsheet[j].timezone);
             }
         }
     }
 
-    var count = 0;
-    var legendcount = 0;
-
-    var colorIndex = -1;
-    var colorMapIndex = -1;
-    var colorMapName = ['Blues', 'Reds', 'Greens', 'Purples', 'Oranges', 'Greys', 'BrBg'];
-    var colorSet;
+    
     //Get Arc's over the circle 
     function getArcs(k,status) {
         var p1, p2;
         
         if(k == 0 && status == "checkin") {
             colorIndex = colorIndex + 1;
+
+            if(colorMapIndex == colorMapName.length -1) {
+                colorMapIndex = -1;
+            }
             colorMapIndex = colorMapIndex + 1;
             colorSet = colorbrewer[colorMapName[colorMapIndex]];
         }
@@ -202,85 +236,82 @@ function main(root, root2) {
             p2 = parseFloat(availabilitytill[k]) - timezone;
         }
             
-            p1 = 15 * p1;
-            p1 = toRadians(p1);
+        p1 = DEGREES_DIFF * p1;
+        p1 = toRadians(p1);
 
-            p2 = 15 * p2;
-            p2 = toRadians(p2);
+        p2 = DEGREES_DIFF * p2;
+        p2 = toRadians(p2);
 
         var arc = d3.svg.arc()
             .innerRadius(ir)
-            .outerRadius(ir + 20)
+            .outerRadius(ir + ARC_OFFSET)
             .startAngle(p1)
             .endAngle(p2);
 
         svgContainer.append("svg:path")
-            .attr("id", function(){return "path" + count})
-            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-            .attr("fill", function(){ if(status == "checkin") { timezoneColor[colorIndex] = colorSet[9][4]; return colorSet[9][4]; } else if(status == "availability") {return colorSet[9][2];} } )
+            .attr("id", function(){return "path" + personCount})
+            .attr("transform", "translate(" + centerX + "," + centerY + ")")
+            .attr("fill", function(){ if(status == "checkin") { timezoneColor[colorIndex] = colorSet[CB_SET_1][CB_SET_2]; return colorSet[CB_SET_1][CB_SET_2]; } else if(status == "availability") {return colorSet[CB_SET_1][CB_SET_3];} } )
             .attr("stroke", "#ccc")
             .attr("d", arc)
     }
 
-    for(var i = 0; i< root.length; i++) {
+    for(var i = 0; i < peopleSpreadsheet.length; i++) {
      
-        if(root[i].timezone != "") {
-            count = count + 1
-            var ir = radius + (30 * (count) );
-            var color = root[i].color;
-            var name = root[i].name;
-            var initials = root[i].intials
-            var availabilityfrom =  parseFloat(root[i].availabilityfrom);
-            var availabilitytill =  parseFloat(root[i].availabilitytill);
+        if(peopleSpreadsheet[i].timezone != "") {
+            personCount = personCount + 1
+            var ir = radius + (ARC_INNER_RADIUS * (personCount));
+            var color = peopleSpreadsheet[i].color;
+            var name = peopleSpreadsheet[i].name;
+            var initials = peopleSpreadsheet[i].initials;
             //Creating Arrays for timezone people and color to display in legend
-            timezonePeople[legendcount] = name + " [ " + initials + " ] ";
+            timezonePeople[legendCount] = name + " [ " + initials + " ] ";            
             
-            
-            legendcount = legendcount + 1;
+            legendCount = legendCount + 1;
 
             // split Multiple time checkin and checkouts
-            var checkin = root[i].checkin;
-            var checkout = root[i].checkout;
+            var checkin = peopleSpreadsheet[i].checkin;
+            var checkout = peopleSpreadsheet[i].checkout;
             
             checkin = checkin.split(",");
             checkout = checkout.split(",");
             
-            var timezone = getTimeZone(root[i]);
+            var timezone = getTimeZone(peopleSpreadsheet[i]);
 
             if(checkin.length == checkout.length) {
-                
                 for (var k = 0; k < checkin.length; k++) { 
-                    getArcs(k, "checkin");
+                    getArcs(k, "checkin");                    
                 }
 
             } else {
-
-                getArcs(0, "checkin");
+                k = 0;
+                getArcs(k, "checkin");
             }
 
-            var availabilityfrom =  root[i].availabilityfrom;
-            var availabilitytill =  root[i].availabilitytill;
+            var availabilityfrom =  peopleSpreadsheet[i].availabilityfrom;
+            var availabilitytill =  peopleSpreadsheet[i].availabilitytill;
 
             availabilityfrom = availabilityfrom.split(",");
             availabilitytill = availabilitytill.split(",");
 
-            if(availabilityfrom.length == availabilitytill.length)
-            {
+            if(availabilityfrom.length == availabilitytill.length) {
                 for (var k = 0; k < availabilityfrom.length; k++) {
-                    getArcs(k, "availability")
+                    if(availabilityfrom[k] == '') {
+                        //Do nothing
+                    } else {
+                        getArcs(k, "availability");
+                    }
                 }
             }
             
 
             var text = svgContainer.append("text")
-                .attr("x", 10)
-                .attr("dy", 15);
+                .attr("x", ARC_TEXT_X_OFFSET)
+                .attr("dy", ARC_TEXT_Y_OFFSET);
 
             text.append("textPath")
-                .attr("stroke", "black")
-                .attr("xlink:href", function(){return "#path" + count})
+                .attr("xlink:href", function(){return "#path" + personCount})
                 .style("font", "14px verdena,sans-serif")
-                .style("font-weight", 100)
                 .text(initials);
         }
     }
