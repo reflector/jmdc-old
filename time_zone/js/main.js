@@ -49,9 +49,9 @@ function main(peopleSpreadsheet, timezoneSpreadsheet) {
     var ARC_TEXT_Y_OFFSET = 15;
     var ARC_INNER_RADIUS = 30;
 
-    var SVG_LABEL1_X_OFFSET = 10;
-    var SVG_LABEL1_Y_OFFSET = 30;
-    var SVG_LABEL1_COLOR = "#3182bd";
+    // var SVG_LABEL1_X_OFFSET = 10;
+    // var SVG_LABEL1_Y_OFFSET = 30;
+    // var SVG_LABEL1_COLOR = "#3182bd";
 
 
     var SVG_LABEL2_X_OFFSET = 10;
@@ -166,12 +166,12 @@ function main(peopleSpreadsheet, timezoneSpreadsheet) {
 
 
     //label1
-    svgContainer.append("text")
-        .attr("dx", SVG_LABEL1_X_OFFSET)
-        .attr("dy", SVG_LABEL1_Y_OFFSET)
-        .text("JMDC Time zone visualization")
-        .style("font-size", "24px")
-        .style("fill", SVG_LABEL1_COLOR);
+    // svgContainer.append("text")
+    //     .attr("dx", SVG_LABEL1_X_OFFSET)
+    //     .attr("dy", SVG_LABEL1_Y_OFFSET)
+    //     .text("JMDC Time zone visualization")
+    //     .style("font-size", "24px")
+    //     .style("fill", SVG_LABEL1_COLOR);
 
     //label2
     svgContainer.append("text")
