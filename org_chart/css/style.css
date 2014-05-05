@@ -4,6 +4,12 @@ h1, h4{
     color: #666;
 }
 
+h1{
+    color: #888;
+    font: 24px Helvetica,sans-serif;
+    text-decoration: underline;
+}
+
 .node circle, .node rect {
     cursor: pointer;
     stroke: #17669F;

@@ -2,6 +2,12 @@ body {
   background: white;
 }
 
+h1{
+    color: #888;
+    font: 24px Helvetica,sans-serif;
+    text-decoration: underline;
+}
+
 .place-label{
   fill:#ccc;
 }
