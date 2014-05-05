@@ -206,6 +206,7 @@ function main(peopleSpreadsheet, timezoneSpreadsheet) {
     }
 
     function getTimeZone (record) {
+
         for(var j = 0; j < timezoneSpreadsheet.length; j++) {
             if(record.timezone == timezoneSpreadsheet[j].code && record.zone == timezoneSpreadsheet[j].zone) {
                 return parseFloat(timezoneSpreadsheet[j].timezone);
@@ -221,8 +222,8 @@ function main(peopleSpreadsheet, timezoneSpreadsheet) {
         if(k == 0 && status == "checkin") {
             colorIndex = colorIndex + 1;
 
-            if(colorMapIndex == colorMapName.length -1) {
-                colorMapIndex = -1;
+            if(colorMapIndex == colorMapName.length - 1) {
+                colorMapIndex = - 1;
             }
             colorMapIndex = colorMapIndex + 1;
             colorSet = colorbrewer[colorMapName[colorMapIndex]];
@@ -231,7 +232,7 @@ function main(peopleSpreadsheet, timezoneSpreadsheet) {
         if(status == "checkin") {
             p1 = parseFloat(checkin[k]) - timezone;
             p2 = parseFloat(checkout[k]) - timezone;
-        } else if(status == "availability"){
+        } else if(status == "availability") {
             p1 = parseFloat(availabilityfrom[k]) - timezone;
             p2 = parseFloat(availabilitytill[k]) - timezone;
         }
@@ -316,7 +317,7 @@ function main(peopleSpreadsheet, timezoneSpreadsheet) {
         }
     }
 
-    //Attach Div's and Paragraph to DOM elements.
+    //Legend...
     d3.select(".people").selectAll("div")
         .data(timezoneColor)
         .enter().append("div")
