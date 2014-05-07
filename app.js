@@ -1,6 +1,12 @@
 var express = require('express');
+
+
 var app = express();
 
-app.use('/', express.static(__dirname));
+// var ghost = require('ghost');
+
+// ghost(app);
+
+app.use('/', express.static(__dirname  + '/_site'));
 
 app.listen(8000);
