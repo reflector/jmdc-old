@@ -3,9 +3,10 @@ var express = require('express');
 
 var app = express();
 
-// var ghost = require('ghost');
+var ghost = require('./ghost/core'),
+    errors = require('./ghost/core/server/errorHandling');
 
-// ghost(app);
+ghost(app);
 
 app.use('/', express.static(__dirname  + '/_site'));
 
