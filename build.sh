@@ -3,6 +3,12 @@
 rm -rf _site
 mkdir _site
 
+cd ghost
+
+npm install
+cd ..
+
+
 cp -R images _site
 cp -R favicon.ico _site
 cp -R css _site
