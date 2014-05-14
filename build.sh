@@ -8,6 +8,7 @@ cd ghost
 npm install
 cd ..
 
+cp -R auth _site
 
 cp -R images _site
 cp -R favicon.ico _site
