@@ -14,6 +14,8 @@ cp -R images _site
 cp -R favicon.ico _site
 cp -R css _site
 cp -R index.html _site
+cp -R robots.txt _site
+cp -R sitemap.xml _site
 
 cp -R org_chart _site
 cp -R time_zone _site
