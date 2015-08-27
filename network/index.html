@@ -235,85 +235,94 @@ legendLink.append("text")
 
 
 
-var margin = {top: 200, right: 40, bottom: 200, left: 40} // JCM replace this with a calc that places the timeline at the bottom of the chart
-    timelineWidth = width - margin.left - margin.right,
-    timelineHeight = 50;
+//var margin = {top: 200, right: 40, bottom: 200, left: 40} // JCM replace this with a calc that places the //timeline at the bottom of the chart
+//    timelineWidth = width - margin.left - margin.right,
+//    timelineHeight = 50;
+//
+//var x = d3.time.scale()
+//    .domain([new Date(2000, 1, 1), new Date(2015, 1, 1) - 1])
+//    .range([0, timelineWidth]);
+//
+//var brush = d3.svg.brush()
+//    .x(x)
+//    .extent([new Date(2002, 1, 1), new Date(2004, 1, 1)])
+//    .on("brush", brushed);
+//
+//var g= svg.append("g")
+//    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+//
+//g.append("rect")
+//    .attr("class", "grid-background")
+//    .attr("width", timelineWidth)
+//    .attr("height", timelineHeight);
+//
+//g.append("g")
+//    .attr("class", "x grid")
+//    .attr("transform", "translate(0," + timelineHeight + ")")
+//    .call(d3.svg.axis()
+//        .scale(x)
+//        .orient("bottom")
+//        .ticks(d3.time.months, 12)
+//        .tickSize(-timelineHeight)
+//        .tickFormat(""))
+//  .selectAll(".tick")
+//    .classed("minor", function(d) { return d.getHours(); }); // JCM hours?
+//
+//g.append("g")
+//    .attr("class", "x axis")
+//    .attr("transform", "translate(0," + timelineHeight + ")")
+//    .call(d3.svg.axis()
+//      .scale(x)
+//      .orient("bottom")
+//      .ticks(d3.time.years)
+//      .tickPadding(0))
+//  .selectAll("text")
+//    .attr("x", 6)
+//    .style("text-anchor", null);
+//
+//var gBrush = g.append("g")
+//    .attr("class", "brush")
+//    .call(brush);
+//
+//gBrush.selectAll("rect")
+//    .attr("height", timelineHeight);
+//
+//function brushed() {
+//  var extent0 = brush.extent(),
+//      extent1;
+//
+//  // if dragging, preserve the width of the extent
+//  if (d3.event.mode === "move") {
+//    var d0 = d3.time.day.round(extent0[0]),
+//        d1 = d3.time.day.offset(d0, Math.round((extent0[1] - extent0[0]) / 864e5));
+//    extent1 = [d0, d1];
+//  }
+//
+//  // otherwise, if resizing, round both dates
+//  else {
+//    extent1 = extent0.map(d3.time.day.round);
+//
+//    // if empty when rounded, use floor & ceil instead
+//    if (extent1[0] >= extent1[1]) {
+//      extent1[0] = d3.time.day.floor(extent0[0]); // JCM round to nearest month?
+//      extent1[1] = d3.time.day.ceil(extent0[1]); // JCM round to nearest month?
+//    }
+//  }
+//
+//  d3.select(this).call(brush.extent(extent1));
+//}
 
-var x = d3.time.scale()
-    .domain([new Date(2000, 1, 1), new Date(2015, 1, 1) - 1])
-    .range([0, timelineWidth]);
 
-var brush = d3.svg.brush()
-    .x(x)
-    .extent([new Date(2002, 1, 1), new Date(2004, 1, 1)])
-    .on("brush", brushed);
+function updateWindow(e){
+  var w = window
+    x = w.innerWidth || e.clientWidth || g.clientWidth;
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
-var g= svg.append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-g.append("rect")
-    .attr("class", "grid-background")
-    .attr("width", timelineWidth)
-    .attr("height", timelineHeight);
-
-g.append("g")
-    .attr("class", "x grid")
-    .attr("transform", "translate(0," + timelineHeight + ")")
-    .call(d3.svg.axis()
-        .scale(x)
-        .orient("bottom")
-        .ticks(d3.time.months, 12)
-        .tickSize(-timelineHeight)
-        .tickFormat(""))
-  .selectAll(".tick")
-    .classed("minor", function(d) { return d.getHours(); }); // JCM hours?
-
-g.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + timelineHeight + ")")
-    .call(d3.svg.axis()
-      .scale(x)
-      .orient("bottom")
-      .ticks(d3.time.years)
-      .tickPadding(0))
-  .selectAll("text")
-    .attr("x", 6)
-    .style("text-anchor", null);
-
-var gBrush = g.append("g")
-    .attr("class", "brush")
-    .call(brush);
-
-gBrush.selectAll("rect")
-    .attr("height", timelineHeight);
-
-function brushed() {
-  var extent0 = brush.extent(),
-      extent1;
-
-  // if dragging, preserve the width of the extent
-  if (d3.event.mode === "move") {
-    var d0 = d3.time.day.round(extent0[0]),
-        d1 = d3.time.day.offset(d0, Math.round((extent0[1] - extent0[0]) / 864e5));
-    extent1 = [d0, d1];
-  }
-
-  // otherwise, if resizing, round both dates
-  else {
-    extent1 = extent0.map(d3.time.day.round);
-
-    // if empty when rounded, use floor & ceil instead
-    if (extent1[0] >= extent1[1]) {
-      extent1[0] = d3.time.day.floor(extent0[0]); // JCM round to nearest month?
-      extent1[1] = d3.time.day.ceil(extent0[1]); // JCM round to nearest month?
-    }
-  }
-
-  d3.select(this).call(brush.extent(extent1));
+    svg.attr("width", x).attr("height", y+200);
 }
+window.onresize = updateWindow;
 
-
-
+updateWindow();
 
 
 //

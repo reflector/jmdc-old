@@ -123,3 +123,42 @@ header, footer, article, section, hgroup, nav, figure, aside { display: block; }
 		width: 100%;
 	}
 }
+
+h1 {
+	font-family: "museo-1","museo-2",serif;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 4em;
+	padding-bottom:1em;
+	border-bottom-style:solid;
+	border-color:#8B8B8B;
+}
+h2 {
+	font-family: "proxima-nova-1","proxima-nova-2",sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 3em;
+}
+h3 {
+	font-family: "museo-1","museo-2",serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 2em;
+}
+h4 {
+	font-family: "proxima-nova-1","proxima-nova-2",sans-serif;
+	font-style: normal;
+	font-weight: 300;
+	font-size: 1em;
+}
+
+/*
+
+#191919 Slate
+#323232 Charcoal
+#8B8B8B Cool Grey
+#E57200 Orange
+#00A3E0 Arctic Blue
+#C4D600 Lime
+
+*/
