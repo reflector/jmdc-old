@@ -17,6 +17,7 @@ cp -R index.html _site
 cp -R robots.txt _site
 cp -R sitemap.xml _site
 
+cp -R network _site
 cp -R org_chart _site
 cp -R time_zone _site
 cp -R geo_map/web _site/geo_map
