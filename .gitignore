@@ -3,3 +3,4 @@ _site/
 node_modules/
 *.log
 ghost/content/data/ghost-dev.db
+.DS_Store
