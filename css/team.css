@@ -1,0 +1,345 @@
+
+/* Color */
+
+.color-slate {
+    color: #191919;
+}
+
+.color-charcoal {
+    color: #323232;
+}
+
+.color-cool-grey {
+    color: #8B8B8B;
+}
+
+.color-orange {
+    color: #E57200;
+}
+
+.color-arctic-blue {
+    color: #00A3E0;
+}
+
+.color-lime {
+    color: #C4D600;
+}
+
+.background-color-slate {
+    background-color: #191919;
+}
+
+.background-color-charcoal {
+    background-color: #323232;
+}
+
+.background-color-cool-grey {
+    background-color: #8B8B8B;
+}
+
+.background-color-orange {
+    background-color: #E57200;
+}
+
+.background-color-arctic-blue {
+    background-color: #00A3E0;
+}
+
+.background-color-lime {
+    background-color: #C4D600;
+}
+
+/* Typography */
+
+.font-museo-700 {
+	font-family: "museo-1","museo-2",serif;
+	font-style: normal;
+	font-weight: 700;    
+}
+.font-proxima-nova-semibold {
+	font-family: "proxima-nova-1","proxima-nova-2",sans-serif;
+	font-style: normal;
+	font-weight: 600;    
+}
+.font-museo-300 {
+	font-family: "museo-1","museo-2",serif;
+	font-style: normal;
+	font-weight: 300;    
+}
+.font-proxima-nova-light{
+	font-family: "proxima-nova-1","proxima-nova-2",sans-serif;
+	font-style: normal;
+	font-weight: 300;    
+}
+
+h1 {
+	font-family: "museo-1","museo-2",serif;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 3em;
+	border-bottom-style: solid;
+	border-color: #8B8B8B;    
+    display: inline;
+}
+
+h2 {
+	font-family: "proxima-nova-1","proxima-nova-2",sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 1.5em;
+    text-transform: uppercase;
+}
+
+h3 {
+	font-family: "museo-1","museo-2",serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 2em;
+}
+
+p {
+	font-family: "proxima-nova-1","proxima-nova-2",sans-serif;
+	font-style: normal;
+	font-weight: 300;
+	font-size: 1em;
+    color: #323232;
+}
+
+/* Header */
+
+.page-header-1 {
+    height: .9em;
+    background-color: #E57200;
+}
+
+.page-header-2 {
+    height: .9em;
+    background-color: #00A3E0;
+}
+
+.page-header-3 {
+    height: .9em;
+    background-color: #C4D600;
+}
+
+/* Logos and Icons */
+
+.logo-large {
+    height: 12em;
+    width: 32em;    
+}
+
+.logo-medium {
+    height: 7.5em;
+    width: 20em;    
+}
+
+.logo-small {
+    height: 3.75em;
+    width: 10em;    
+}
+
+.primary-logo {
+    background-image: url(logo/svg/JMLogo.svg);
+    background-repeat: no-repeat;
+}
+
+.secondary-logo-bolt {
+    background-image: url(logo/svg/JMLogo-bolt.svg);      
+    background-repeat: no-repeat;
+}
+
+.secondary-logo-rocket {
+    background-image: url(logo/svg/JMLogo-rocket.svg);      
+    background-repeat: no-repeat;
+}
+
+.secondary-logo-robot {
+    background-image: url(logo/svg/JMLogo-robot.svg);      
+    background-repeat: no-repeat;    
+}
+
+.icon-inverse-glasses {
+    background-image: url(icons-inverse/svg/glasses.svg);    
+    background-repeat: no-repeat;
+    height: 6em;
+    width: 6em;
+}
+
+.icon-inverse-bolt {
+    background-image: url(icons-inverse/svg/bolt.svg);      
+    background-repeat: no-repeat;
+    height: 6em;
+    width: 6em;
+}
+
+.icon-inverse-rocket {
+    background-image: url(icons-inverse/svg/rocket.svg);      
+    height: 6em;
+    width: 6em;
+}
+
+.icon-inverse-robot {
+    background-image: url(icons-inverse/svg/robot.svg);      
+    height: 6em;
+    width: 6em;
+}
+
+.icon-glasses {
+    background-image: url(icons/svg/glasses.svg);    
+    background-repeat: no-repeat;
+    height: 6em;
+    width: 6em;
+}
+
+.icon-bolt {
+    background-image: url(icons/svg/bolt.svg);      
+    background-repeat: no-repeat;
+    height: 6em;
+    width: 6em;
+}
+
+.icon-rocket {
+    background-image: url(icons/svg/rocket.svg);      
+    height: 6em;
+    width: 6em;
+}
+
+.icon-robot {
+    background-image: url(icons/svg/robot.svg);      
+    height: 6em;
+    width: 6em;
+}
+
+.icon-6x6 {
+    height: 6em;
+    width: 6em;    
+}
+
+.icon-10x10 {
+    height: 10em;
+    width: 10em;    
+}
+
+/* */
+
+.page {
+    margin: 5em
+}
+
+.center {
+    margin-left:auto;
+    margin-right:auto;
+    text-align: center;
+}
+
+.inline-block div {
+    display: inline-block;
+}
+
+/* */
+
+
+/* */
+
+nav {
+    margin-top: 4em
+}
+
+nav a {
+    margin-left: 3em;
+    font-size: 2.5em;
+    text-decoration: none;
+}
+
+/* */
+
+.social-networks {
+	list-style: none;
+	padding: 0;
+	margin: 0 21px 0 0;
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+}
+.social-networks li {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 0 0 19px;
+}
+.social-networks li a {
+	background: url(../images/social-networks.png) no-repeat;
+	width: 38px;
+	height: 38px;
+	text-indent: -9999px;
+	overflow: hidden;
+	display: block;
+}
+.social-networks li.envelope a { background-position:-6px -5px; }
+.social-networks li.twitter a { background-position: -67px -5px; }
+.social-networks li.linkedin a { background-position: -123px -5px; }
+.social-networks li.envelope a:hover {background-position:-8px -62px;}
+.social-networks li.twitter a:hover {background-position: -64px -62px; }
+.social-networks li.linkedin a:hover {background-position: -123px -62px; }
+
+/* */
+
+#hello {
+	font-family: "museo-1","museo-2",serif;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 2em;
+	border-color: #8B8B8B;    
+}
+
+.section-title {
+    margin-top: 6em;
+    border-bottom-style: solid;
+    border-bottom-width: 3pt;
+    border-bottom-color: #8B8B8B;
+    padding-bottom: 1em;
+}
+
+#contact {
+    margin-top: 1em;
+}
+
+.head-shot {
+    height: 10em;
+    width: 10em;     
+    float:right;
+    margin-right:2em;
+}
+
+.experience {
+    
+}
+
+.biography {
+    margin-top: 0;
+}
+
+.employers, .clients, .advisor, .founder, .expertise {
+    font-style: italic;
+    margin-left: 2em;
+    margin-top: 0em;
+    margin-bottom: 0.5em
+    
+}
+
+header {
+    background-color: #8B8B8B;    
+	height: 38px;
+    margin-bottom: 4em;
+}
+
+header .primary-logo {
+    float: right;
+    margin-top: 4em;
+    margin-right: 4em;
+}
+
+footer {
+    margin-top: 4em;
+    background-color: #8B8B8B;    
+}
