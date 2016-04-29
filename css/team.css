@@ -140,73 +140,73 @@ p {
 }
 
 .primary-logo {
-    background-image: url(logo/svg/JMLogo.svg);
+    background-image: url(../logo/svg/JMLogo.svg);
     background-repeat: no-repeat;
 }
 
 .secondary-logo-bolt {
-    background-image: url(logo/svg/JMLogo-bolt.svg);      
+    background-image: url(../logo/svg/JMLogo-bolt.svg);      
     background-repeat: no-repeat;
 }
 
 .secondary-logo-rocket {
-    background-image: url(logo/svg/JMLogo-rocket.svg);      
+    background-image: url(../logo/svg/JMLogo-rocket.svg);      
     background-repeat: no-repeat;
 }
 
 .secondary-logo-robot {
-    background-image: url(logo/svg/JMLogo-robot.svg);      
+    background-image: url(../logo/svg/JMLogo-robot.svg);      
     background-repeat: no-repeat;    
 }
 
 .icon-inverse-glasses {
-    background-image: url(icons-inverse/svg/glasses.svg);    
+    background-image: url(../icons-inverse/svg/glasses.svg);    
     background-repeat: no-repeat;
     height: 6em;
     width: 6em;
 }
 
 .icon-inverse-bolt {
-    background-image: url(icons-inverse/svg/bolt.svg);      
+    background-image: url(../icons-inverse/svg/bolt.svg);      
     background-repeat: no-repeat;
     height: 6em;
     width: 6em;
 }
 
 .icon-inverse-rocket {
-    background-image: url(icons-inverse/svg/rocket.svg);      
+    background-image: url(../icons-inverse/svg/rocket.svg);      
     height: 6em;
     width: 6em;
 }
 
 .icon-inverse-robot {
-    background-image: url(icons-inverse/svg/robot.svg);      
+    background-image: url(../icons-inverse/svg/robot.svg);      
     height: 6em;
     width: 6em;
 }
 
 .icon-glasses {
-    background-image: url(icons/svg/glasses.svg);    
+    background-image: url(../icons/svg/glasses.svg);    
     background-repeat: no-repeat;
     height: 6em;
     width: 6em;
 }
 
 .icon-bolt {
-    background-image: url(icons/svg/bolt.svg);      
+    background-image: url(../icons/svg/bolt.svg);      
     background-repeat: no-repeat;
     height: 6em;
     width: 6em;
 }
 
 .icon-rocket {
-    background-image: url(icons/svg/rocket.svg);      
+    background-image: url(../icons/svg/rocket.svg);      
     height: 6em;
     width: 6em;
 }
 
 .icon-robot {
-    background-image: url(icons/svg/robot.svg);      
+    background-image: url(../icons/svg/robot.svg);      
     height: 6em;
     width: 6em;
 }
