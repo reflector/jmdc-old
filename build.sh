@@ -11,6 +11,9 @@ cd ..
 cp -R auth _site
 
 cp -R images _site
+cp -R logo _site
+cp -R icons _site
+cp -R icons-inverse _site
 cp -R favicon.ico _site
 cp -R css _site
 cp -R index.html _site
